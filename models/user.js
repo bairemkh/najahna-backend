@@ -24,8 +24,8 @@ const userSchema =  new Schema(
         },
         role :{
             type: String,
-            enum :['student','trainer'],
-            default: 'student'
+            enum :['Student','Trainer'],
+            default: 'Student'
         },
         fields:{
             type: [String],
