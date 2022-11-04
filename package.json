@@ -1,0 +1,25 @@
+{
+  "name": "najahna-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bairemkh/najahna-backend.git"
+  },
+  "keywords": [
+    "Mini-project",
+    "backend"
+  ],
+  "author": "Med & Bairem",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bairemkh/najahna-backend/issues"
+  },
+  "homepage": "https://github.com/bairemkh/najahna-backend#readme"
+}
