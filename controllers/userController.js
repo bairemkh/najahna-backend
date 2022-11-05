@@ -39,11 +39,11 @@ export async function signin (req,res) {
 }
 
 export async function profile (req,res) {
-    if(!isAuth(req)){
+    if(!req.user){
         return res.status('401').json({error: "You're not authenticated!"});
     }
 
-    const user = await User.findById(isAuth(req));
+    const user = await User.findById(req.user._id);
 
     res.status(200).json({data: user});
 }
