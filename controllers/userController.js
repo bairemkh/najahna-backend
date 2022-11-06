@@ -99,7 +99,7 @@ export async function verifyAccount(req,res){
     catch(e){
         res.status(500).json({Error:"Server error"})
     }
-    
+}
 
 export function editProfile (req,res) {
     User.findOneAndUpdate(req.user._id,req.body)
@@ -116,6 +116,4 @@ export function editProfile (req,res) {
     .catch((err) => {
         res.status(500).json({ error: err});
     });
-
-
 }

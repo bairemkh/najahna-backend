@@ -28,6 +28,8 @@ router
 router
 .route("/verify-account")
 .post(verifyAccount)
+
+router
 .route("/editprofile")
 .put(protect,editProfile)
 export default router;
