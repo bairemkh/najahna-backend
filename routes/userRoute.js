@@ -1,5 +1,5 @@
 import express from 'express';
-import { profile, signin, signup } from '../controllers/userController.js';
+import { profile, signin, signup,forgetPassword } from '../controllers/userController.js';
 import { protect, trainer } from '../middleware/autorization.js';
 
 const router = express.Router();
@@ -15,4 +15,8 @@ router
 router
 .route("/profile")
 .get(protect,profile)
+
+router
+.route("/forget-password")
+.post(forgetPassword)
 export default router;

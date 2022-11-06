@@ -47,3 +47,24 @@ export async function profile (req,res) {
 
     res.status(200).json({data: user});
 }
+export async function forgetPassword(req,res){
+    const {email}=req.body;
+    User.findOne({"email": email})
+    .then(user=>{
+        if(user==null){
+            res.status(404).json({error:"Not Found"})
+        }
+        const payload={
+            email:user.email,
+            id:user.id
+        }
+        const token=jwt.sign(payload,process.env.JWT_SECRET,{
+            expiresIn: 60 * 60 * 24,
+        })
+        const link=`http://localhost:9090/user/reset-password/${user.id}/${token}`
+    })
+    .catch(e=>{
+        res.status(500).json({error:"Not Found"})
+    })
+
+}
