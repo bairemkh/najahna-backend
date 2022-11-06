@@ -15,10 +15,12 @@ export async function signup  (req,res) {
     } else {
         const user = await User.create(req.body)
         const hash = await bcrypt.hash(password,10);
+        const image =  await req.file.filename;
         user.password = hash;
         const otp=otpGenerator.generate(4, { upperCaseAlphabets: false, specialChars: false,digits:true,lowerCaseAlphabets:false })
         user.otp=otp;
         user.isVerified=false
+        user.image =`${req.protocol}://${req.get('host')}/img/${image}`
         await user.save();
         return res.status(200).json({success : true});    
     }
@@ -49,7 +51,6 @@ export async function profile (req,res) {
     if(!req.user){
         return res.status('401').json({error: "You're not authenticated!"});
     }
-
     const user = await User.findById(req.user._id);
 
     res.status(200).json({data: user});
@@ -99,4 +100,22 @@ export async function verifyAccount(req,res){
         res.status(500).json({Error:"Server error"})
     }
     
+
+export function editProfile (req,res) {
+    User.findOneAndUpdate(req.user._id,req.body)
+    .then((u) => {
+        res.status(200).json({ message: "updated"});
+       /* User.findById(req.user._id)
+        .then((u1) => {
+            res.status(200).json(u1);
+        })
+        .catch((err) => {
+            res.status(500).json({ error: err});
+        });*/
+    })
+    .catch((err) => {
+        res.status(500).json({ error: err});
+    });
+
+
 }

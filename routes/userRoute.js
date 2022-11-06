@@ -1,12 +1,13 @@
 import express from 'express';
-import { profile, signin, signup,forgetPassword,resetPassword,verifyAccount } from '../controllers/userController.js';
+import { profile, signin, signup,forgetPassword,resetPassword,verifyAccount,editProfile } from '../controllers/userController.js';
 import { protect, trainer } from '../middleware/autorization.js';
+import multer from '../middleware/multer-config.js';
 
 const router = express.Router();
 
 router
 .route("/signup")
-.post(signup)
+.post(multer,signup)
 
 router
 .route("/signin")
@@ -27,5 +28,6 @@ router
 router
 .route("/verify-account")
 .post(verifyAccount)
-
+.route("/editprofile")
+.put(protect,editProfile)
 export default router;
