@@ -1,5 +1,5 @@
 import express from 'express';
-import { editProfile, profile, signin, signup } from '../controllers/userController.js';
+import { profile, signin, signup,forgetPassword,resetPassword,verifyAccount,editProfile } from '../controllers/userController.js';
 import { protect, trainer } from '../middleware/autorization.js';
 import multer from '../middleware/multer-config.js';
 
@@ -18,6 +18,16 @@ router
 .get(protect,profile)
 
 router
+.route("/forget-password")
+.post(forgetPassword)
+
+router
+.route("/reset-password")
+.post(resetPassword)
+
+router
+.route("/verify-account")
+.post(verifyAccount)
 .route("/editprofile")
 .put(protect,editProfile)
 export default router;
