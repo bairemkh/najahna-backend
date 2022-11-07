@@ -31,6 +31,10 @@ const userSchema =  new Schema(
             enum :['Student','Trainer'],
             default: 'Student'
         },
+        otp: {
+            type: String,
+            required: false,
+          },
         fields:{
             type: [String],
             enum: ['Science','Programming','Computing','Mechanics','Business','Soft skills','Language','Arts','Multimedia'],
