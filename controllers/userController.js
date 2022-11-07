@@ -64,5 +64,26 @@ export function editProfile (req,res) {
     .catch((err) => {
         res.status(500).json({ error: err});
     });
+}
+
+export async function changepassword (req,res) {
+    const {password,newpassword} =  req.body;
+    const user = await User.findOne(req.user._id)
+    const passwordCompare = await bcrypt.compare(password,user.password);
+    if(!passwordCompare){
+        return res.status(403).json({error : "password failed"})
+    }
+
+    const hash = await bcrypt.hash(newpassword,10);
+    user.password = hash;
+    await user.save();
+
+    res.status(200).json({message : "password updated"});
+
+}
+
+export async function deleteaccount (req,res) {
+    await User.deleteOne(req.user._id);
+    res.status(200).json({message : "account deleted"});
 
 }
