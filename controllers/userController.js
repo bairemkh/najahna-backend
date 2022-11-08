@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import otpGenerator from "otp-generator";
 
 import { isAuth } from "../middleware/isAuth.js";
+import { verificationMail } from "./utils/mailer.js";
 //import isAuth from "../middleware/isAuth.js";
 
 export async function signup  (req,res) {
@@ -57,7 +58,7 @@ export async function profile (req,res) {
 }
 //ta3ml otp jdid
 export async function forgetPassword(req,res){
-    const {email}=req.body;
+    const {email,otp}=req.body;
     User.findOne({"email": email})
     .then(user=>{
         if(user==null){
@@ -69,7 +70,8 @@ export async function forgetPassword(req,res){
             return
         }
             user.otp=otpGenerator.generate(4, { upperCaseAlphabets: false, specialChars: false,digits:true,lowerCaseAlphabets:false })
-            user.save();
+            verificationMail()
+           // user.save();
             res.status(200).json({_id:user.id})
     })
     .catch(e=>{

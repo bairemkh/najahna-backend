@@ -46,12 +46,14 @@ router
 .route("/delete-account")
 .delete(protect,deleteaccount)
 
+
+
 router
 .route("/sendMail")
 .get((req,res)=>{
     try{
         var from = "Najahni team"
-    var to = "bairemkh@gmail.com"
+    var to = "oueslatimohamed01@gmail.com"
     var subject = "Let's verify your account"
 
     var transporter = nodemailer.createTransport({
@@ -65,10 +67,12 @@ router
         from: from,
         to:to,
         subject:subject,
-        html:{path: ''},
+       /* html:{path: '../controllers/utils/templates'},
         context:{
             number: "2345"
-        }
+        }*/
+        html:
+        "<h3>You have requested to reset your password</h3><p>Your reset code is : <b style='color : blue'> 4324</b></p>",
         
     }
 
