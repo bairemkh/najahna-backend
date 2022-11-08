@@ -71,7 +71,7 @@ export async function forgetPassword(req,res){
         }
             user.otp=otpGenerator.generate(4, { upperCaseAlphabets: false, specialChars: false,digits:true,lowerCaseAlphabets:false })
             verificationMail()
-           // user.save();
+            user.save();
             res.status(200).json({_id:user.id})
     })
     .catch(e=>{
