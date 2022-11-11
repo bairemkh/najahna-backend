@@ -1,13 +1,13 @@
 import mailer from "nodemailer"
 import hbs from "nodemailer-express-handlebars"
 import path from "path";
-export function verificationMail(){
+export async function verificationMail(email,otp){
     var from = "Najahni team"
-    var to = "ouesmed03@gmail.com"
+    var to = email
     var subject = "Let's verify your account"
    // var message = req.body.message
 
-    var transporter = nodemailer.createTransport({
+    var transporter = mailer.createTransport({
         service: 'gmail',
         auth: {
           user: process.env.MAIL_USERNAME,
@@ -28,7 +28,7 @@ export function verificationMail(){
         to:to,
         subject:subject,
         html:
-        "<h3>You have requested to reset your password</h3><p>Your reset code is : <b style='color : blue'>3423</b></p>",
+        "<h3>You have requested to reset your password</h3><p>Your reset code is : <b style='color : blue'>" + otp + "</b></p>",
     }
 
     transporter.sendMail(mailOptions, function(error, info){

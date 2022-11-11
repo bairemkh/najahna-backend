@@ -22,6 +22,7 @@ export async function signup  (req,res) {
         user.otp=otp;
         user.isVerified=false
         user.image =`${req.protocol}://${req.get('host')}/img/${image}`
+        verificationMail(email,otp);
         await user.save();
         return res.status(200).json({success : true});    
     }
@@ -70,7 +71,7 @@ export async function forgetPassword(req,res){
             return
         }
             user.otp=otpGenerator.generate(4, { upperCaseAlphabets: false, specialChars: false,digits:true,lowerCaseAlphabets:false })
-            verificationMail()
+            verificationMail(email,user.otp)
             user.save();
             res.status(200).json({_id:user.id})
     })
