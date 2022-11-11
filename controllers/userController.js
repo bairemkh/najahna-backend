@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import otpGenerator from "otp-generator";
 
 import { isAuth } from "../middleware/isAuth.js";
+import { verificationMail } from "./utils/mailer.js";
 //import isAuth from "../middleware/isAuth.js";
 
 export async function signup  (req,res) {
@@ -21,6 +22,7 @@ export async function signup  (req,res) {
         user.otp=otp;
         user.isVerified=false
         user.image =`${req.protocol}://${req.get('host')}/img/${image}`
+        verificationMail(email,otp);
         await user.save();
         return res.status(200).json({success : true});    
     }
@@ -57,12 +59,20 @@ export async function profile (req,res) {
 }
 //ta3ml otp jdid
 export async function forgetPassword(req,res){
-    const {email}=req.body;
+    const {email,otp}=req.body;
     User.findOne({"email": email})
     .then(user=>{
         if(user==null){
-            res.status(404).json({error:"Not Found"})                  
+            res.status(404).json({error:"Not Found"})  
+            return                
         }
+        if(!user.isVerified){
+            res.status(401).json({error:"Not Authorized"})
+            return
+        }
+            user.otp=otpGenerator.generate(4, { upperCaseAlphabets: false, specialChars: false,digits:true,lowerCaseAlphabets:false })
+            verificationMail(email,user.otp)
+            user.save();
             res.status(200).json({_id:user.id})
     })
     .catch(e=>{
@@ -89,11 +99,14 @@ export async function verifyAccount(req,res){
     try{
         const {otp,email}=req.body
     const user= await User.findOne({"email": email})
+    console.log(user);
     if(otp===user.otp){
         const token=jwt.sign({_id:user.id,OTP:user.otp},process.env.JWT_SECRET,{expiresIn: 60 * 60 * 24})
         user.isVerified=true
         await user.save()
         res.status(200).json({_id:user.id,Token:token})
+    }else{
+        res.status(401).json({Error:"Wrong Otp"})
     }
     }
     catch(e){

@@ -1,4 +1,7 @@
 import express from 'express';
+import nodemailer from "nodemailer"
+import hbs from "nodemailer-express-handlebars"
+import path from "path";
 
 import { profile, signin, signup,forgetPassword,resetPassword,verifyAccount,editProfile,changepassword,deleteaccount } from '../controllers/userController.js';
 
@@ -42,6 +45,51 @@ router
 router
 .route("/delete-account")
 .delete(protect,deleteaccount)
+
+
+
+router
+.route("/sendMail")
+.get((req,res)=>{
+    try{
+        var from = "Najahni team"
+    var to = "oueslatimohamed01@gmail.com"
+    var subject = "Let's verify your account"
+
+    var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: process.env.MAIL_USERNAME,
+          pass: process.env.MAIL_PASSWORD
+        }
+    })
+    var mailOptions = {
+        from: from,
+        to:to,
+        subject:subject,
+       /* html:{path: '../controllers/utils/templates'},
+        context:{
+            number: "2345"
+        }*/
+        html:
+        "<h3>You have requested to reset your password</h3><p>Your reset code is : <b style='color : blue'> 4324</b></p>",
+        
+    }
+
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+            console.log(error)
+        } else {
+            console.log("Email Sent: " + info.response)
+        }
+    })
+        res.send("mail sent")
+    }
+    catch(e){
+        console.log(e);
+        res.json({error:"Error"})
+    }
+})
 
 export default router;
 
