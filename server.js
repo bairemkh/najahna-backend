@@ -3,9 +3,15 @@ import mongoose from 'mongoose';
 import morgan from 'morgan';
 import cors from 'cors';
 import * as dotenv from 'dotenv';
+
 dotenv.config()
 
 import userRoutes from './routes/userRoute.js';
+import swaggerUi from 'swagger-ui-express';
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerDocument from './swagger.json' assert { type: "json" };
+
+
 
 
 const app = express();
@@ -32,8 +38,8 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.static('public'));
 
 
-
 app.use('/user',userRoutes);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
