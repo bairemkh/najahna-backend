@@ -2,7 +2,7 @@
     "swagger": "2.0",
     "info": {
       "version": "1.0.0",
-      "title": "My User Project CRUD",
+      "title": "Najahni backend documentation",
       "description": "My User Project Application API",
       "license": {
         "name": "MIT",
@@ -29,12 +29,12 @@
           "requestBody": {
             "required": true,
             "content": {
-              "application/x-www-form-urlencoded:": {
+              "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "email": "type:string",
-                    "password": "type:string"
+                    "_id": "type:string",
+                    "token": "type:string"
                   }
                 }
               }
