@@ -16,6 +16,7 @@ const swaggerDocument = require('./swagger.json')
 
 
 
+
 const app = express();
 const port = process.env.PORT || 9090;
 
@@ -41,7 +42,7 @@ app.use(express.static('public'));
 
 
 app.use('/user',userRoutes);
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
