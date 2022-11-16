@@ -14,22 +14,25 @@ export async function verificationMail(email,otp){
           pass: process.env.MAIL_PASSWORD
         }
     })
-   /* const handlebarOptions = {
+    const handlebarOptions = {
         viewEngine: {
-            partialsDir: path.resolve('./utils/templates'),
-            defaultLayout: false,
+          extName: ".handlebars",
+          partialsDir: path.resolve('./templates/'),
+          defaultLayout: false,
         },
-        viewPath: path.resolve('./utils/templates/'),
-    };*/
-
-
+        viewPath: path.resolve('./templates/'),
+        extName: ".handlebars",
+      }
+    transporter.use('compile', hbs(handlebarOptions));
     var mailOptions = {
         from: from,
-        to:to,
-        subject:subject,
-        html:
-        "<h3>You have requested to reset your password</h3><p>Your reset code is : <b style='color : blue'>" + otp + "</b></p>",
-    }
+        to: to,
+        subject: subject,
+        template: 'verifMail',
+        context: {
+            number: otp,
+        }      
+      };
 
     transporter.sendMail(mailOptions, function(error, info){
         if (error) {
