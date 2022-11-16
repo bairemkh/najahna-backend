@@ -9,7 +9,7 @@ dotenv.config()
 import userRoutes from './routes/userRoute.js';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
-import swaggerDocument from './swagger.json' assert { type: "json" };
+//import swaggerDocument from './swagger.json' assert { type: "json" };
 
 
 
@@ -39,7 +39,7 @@ app.use(express.static('public'));
 
 
 app.use('/user',userRoutes);
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
