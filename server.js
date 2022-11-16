@@ -9,7 +9,9 @@ dotenv.config()
 import userRoutes from './routes/userRoute.js';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
-import swaggerDocument from './swagger.json' assert { type: "json" };
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const swaggerDocument = require('./swagger.json')  
 
 
 
