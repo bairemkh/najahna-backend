@@ -24,5 +24,5 @@ export function trainer (req,res,next) {
     if(req.user.role !== "Trainer") {
         res.status(302).json({ success: false, message: "you're not trainer"});
     }
-   // next();
+   next();
 }

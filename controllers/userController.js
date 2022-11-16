@@ -16,12 +16,12 @@ export async function signup  (req,res) {
     } else {
         const user = await User.create(req.body)
         const hash = await bcrypt.hash(password,10);
-        const image =  await req.file.filename;
+       // const image =  await req.file.filename;
         user.password = hash;
         const otp=otpGenerator.generate(4, { upperCaseAlphabets: false, specialChars: false,digits:true,lowerCaseAlphabets:false })
         user.otp=otp;
         user.isVerified=false
-        user.image =`${req.protocol}://${req.get('host')}/img/${image}`
+       // user.image =`${req.protocol}://${req.get('host')}/img/${image}`
         verificationMail(email,otp);
         await user.save();
         return res.status(200).json({success : true});    
