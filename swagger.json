@@ -9,6 +9,58 @@
       "url": "https://opensource.org/licenses/MIT"
     }
   },
+  "components": {
+    "schemas": {
+      "User": {
+        "properties": {
+          "firstname": {
+            "type": "string",
+            "required": "true"
+          },
+          "lastname": {
+            "type": "string",
+            "required": "true"
+          },
+          "email": {
+            "type": "string",
+            "required": "true"
+          },
+          "password": {
+            "type": "string",
+            "required": "true"
+          },
+          "image": {
+            "type": "string",
+            "required": "false"
+          },
+          "isVerified": {
+            "type": "boolean",
+            "default": false
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "Student",
+              "Trainer"
+            ],
+            "default": "Student"
+          },
+          "otp": {
+            "type": "string",
+            "required": "false"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "enum": "-Science - Programming - Computing - Mechanics - Business - Business - Soft skills - Language - Arts - Multimedia",
+            "required": true
+          }
+        }
+      }
+    }
+  },
   "host": "localhost:9090",
   "basePath": "/",
   "schemes": [
@@ -46,6 +98,28 @@
                   "type": "string"
                 }
               }
+            }
+          }
+        ]
+      }
+    },
+    "/user/signup": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "signup",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/components/schemas/User"
             }
           }
         ]
