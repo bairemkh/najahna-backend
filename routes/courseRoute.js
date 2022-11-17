@@ -1,6 +1,6 @@
 import express from "express";
 import multer from '../middleware/multer-config.js';
-import { createCourse, getAllCourses, getMyOwnerCourses } from "../controllers/courseController.js";
+import { archivedMyCourse, createCourse, getAllCourses, getMyOwnerCourses, updateMyCourses } from "../controllers/courseController.js";
 import { protect, trainer } from "../middleware/autorization.js";
 
 const router = express.Router();
@@ -16,5 +16,13 @@ router
 router
 .route("/mycourses")
 .get(protect,trainer,getMyOwnerCourses)
+
+router
+.route("/update-myCourse/:_id")
+.put(protect,trainer,multer,updateMyCourses)
+
+router
+.route("/archived/:_id")
+.put(protect,trainer,multer,archivedMyCourse)
 
 export default router;

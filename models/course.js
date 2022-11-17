@@ -37,6 +37,11 @@ const courseSchema =  new Schema(
             type: Schema.Types.ObjectId,
             ref: 'User',
             required: false
+        },
+        isArchived:{
+            type: Boolean,
+            required: false,
+            default: false
         }
 
     },

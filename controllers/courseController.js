@@ -21,9 +21,9 @@ export function createCourse (req, res) {
 }
 
 export function getAllCourses (req,res) {
-    Course.find().populate("idowner")
+    Course.find({isArchived : false}).populate("idowner")
     .then((courses) => {
-        res.status(200).json(courses);
+        res.status(200).json({courses : courses});
     })
     .catch((err) => {
         res.status(500).json({error : err});
@@ -33,9 +33,30 @@ export function getAllCourses (req,res) {
 export function getMyOwnerCourses (req,res) {
     Course.find({idowner: req.user._id})
     .then((courses) => {
-        res.status(200).json(courses);
+        res.status(200).json({courses : courses});
     })
     .catch((err) => {
         res.status(500).json({error : err})
     })
+}
+
+export function updateMyCourses (req,res) {
+    Course.findOneAndUpdate({_id : req.params._id,idowner:req.user._id},req.body)
+    .then((c) => {
+        res.status(200).json({ message: "course is updated !"});
+    })
+    .catch((err) => {
+        res.status(500).json({ error: err});
+    });
+}
+
+export function archivedMyCourse (req,res) {
+    const archived = req.body.archived;
+    Course.findOneAndUpdate({_id : req.params._id,idowner:req.user._id},{isArchived: archived})
+    .then((c) => {
+        res.status(200).json({ message: "Course is archived !"});
+    })
+    .catch((err) => {
+        res.status(500).json({ error: err});
+    });
 }
