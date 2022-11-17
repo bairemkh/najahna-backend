@@ -7,6 +7,7 @@ import * as dotenv from 'dotenv';
 dotenv.config()
 
 import userRoutes from './routes/userRoute.js';
+import courseRoutes from './routes/courseRoute.js'
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import { createRequire } from "module";
@@ -38,10 +39,11 @@ app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-app.use(express.static('public'));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use("/img",express.static('public/images'));
 
 app.use('/user',userRoutes);
+app.use('/course',courseRoutes)
 
 
 app.listen(port, () => {
