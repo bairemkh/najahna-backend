@@ -2,11 +2,10 @@ import User from "../models/user.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import otpGenerator from "otp-generator";
-import path from "path";
 
-import { isAuth } from "../middleware/isAuth.js";
 import { otpMail, verificationMail } from "./utils/mailer.js";
-//import isAuth from "../middleware/isAuth.js";
+
+
 
 export async function signup  (req,res) {
     const {email, password} = req.body;
