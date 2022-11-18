@@ -32,7 +32,7 @@ router
 
 router
 .route("/verify-account")
-.post(verifyAccount)
+.get(verifyAccount)
 
 router
 .route("/editprofile")

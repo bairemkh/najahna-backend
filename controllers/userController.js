@@ -2,9 +2,10 @@ import User from "../models/user.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import otpGenerator from "otp-generator";
+import path from "path";
 
 import { isAuth } from "../middleware/isAuth.js";
-import { verificationMail } from "./utils/mailer.js";
+import { otpMail, verificationMail } from "./utils/mailer.js";
 //import isAuth from "../middleware/isAuth.js";
 
 export async function signup  (req,res) {
@@ -22,7 +23,7 @@ export async function signup  (req,res) {
         user.otp=otp;
         user.isVerified=false
        // user.image =`${req.protocol}://${req.get('host')}/img/${image}`
-        verificationMail(email,otp);
+        verificationMail(req,email);
         await user.save();
         return res.status(200).json({success : true});    
     }
@@ -59,7 +60,7 @@ export async function profile (req,res) {
 }
 //ta3ml otp jdid
 export async function forgetPassword(req,res){
-    const {email,otp}=req.body;
+    const {email}=req.body;
     User.findOne({"email": email})
     .then(user=>{
         if(user==null){
@@ -71,9 +72,9 @@ export async function forgetPassword(req,res){
             return
         }
             user.otp=otpGenerator.generate(4, { upperCaseAlphabets: false, specialChars: false,digits:true,lowerCaseAlphabets:false })
-            verificationMail(email,user.otp)
+            otpMail(email,user.firstname,user.otp)
             user.save();
-            res.status(200).json({_id:user.id})
+            res.status(200).json({_id:user._id})
     })
     .catch(e=>{
         res.status(500).json({error:"Server error"})
@@ -84,8 +85,11 @@ export async function resetPassword(req,res){
     try{const {id,otp}=req.body
     const user= await User.findById(id)
     if(otp===user.otp){
-        const token=jwt.sign({_id:user.id,OTP:user.otp},process.env.JWT_SECRET,{expiresIn: 60 * 60 * 24})
-        res.status(200).json({_id:user.id,Token:token})
+        const payload = {id:user.id};
+        const token = jwt.sign(payload,process.env.JWT_SECRET, {
+            expiresIn: 60 * 60 * 24,
+        });
+        res.status(200).json({success: true , data: token});
     }
     else{
         res.status(403).json({error:"Wrong code"})
@@ -97,14 +101,16 @@ export async function resetPassword(req,res){
 }
 export async function verifyAccount(req,res){
     try{
-        const {otp,email}=req.body
+       // const {otp,email}=req.body
+        const email = req.query.email;
     const user= await User.findOne({"email": email})
     console.log(user);
-    if(otp===user.otp){
+    if(user){
         const token=jwt.sign({_id:user.id,OTP:user.otp},process.env.JWT_SECRET,{expiresIn: 60 * 60 * 24})
         user.isVerified=true
         await user.save()
-        res.status(200).json({_id:user.id,Token:token})
+        //res.status(200).json({_id:user.id,Token:token})
+        res.sendFile('../view/index.html');
     }else{
         res.status(401).json({Error:"Wrong Otp"})
     }
