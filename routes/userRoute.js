@@ -3,7 +3,7 @@ import nodemailer from "nodemailer"
 import hbs from "nodemailer-express-handlebars"
 import path from "path";
 
-import { profile, signin, signup,forgetPassword,resetPassword,verifyAccount,editProfile,changepassword,deleteaccount } from '../controllers/userController.js';
+import { profile, signin, signup,forgetPassword,resetPassword,verifyAccount,editProfile,changepassword,deleteaccount, editProfileImage } from '../controllers/userController.js';
 
 import { protect, trainer } from '../middleware/autorization.js';
 import multer from '../middleware/multer-config.js';
@@ -37,6 +37,10 @@ router
 router
 .route("/editprofile")
 .put(protect,editProfile)
+
+router
+.route("/change-photo")
+.post(protect,multer,editProfileImage)
 
 router
 .route("/change-password")

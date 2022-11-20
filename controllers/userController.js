@@ -46,7 +46,7 @@ export async function signin (req,res) {
     const token = jwt.sign(payload,process.env.JWT_SECRET, {
         expiresIn: 60 * 60 * 24,
     });
-    res.status(200).json({success: true , data: token});
+    res.status(200).json({success: true , data: token,role: user.role});
 }
 
 export async function profile (req,res) {
@@ -119,21 +119,48 @@ export async function verifyAccount(req,res){
     }
 }
 
-export function editProfile (req,res) {
-    User.findOneAndUpdate(req.user._id,req.body)
+export async function editProfileImage(req,res) {
+    try{
+        const user = await User.findById(req.user._id)
+        const image =  await req.file.filename;
+        user.image = `${req.protocol}://${req.get('host')}/img/${image}`;
+        user.save();
+        res.status(200).json({message : "image changed"});
+
+    }catch(e){
+        res.status(500).json({Error:"Server error"});
+    }
+
+}
+
+export async function editProfile (req,res) {
+    const password = req.body.password;
+    const user =  await User.findByIdAndUpdate(req.user._id,req.body);
+    
+        
+        const hash = await bcrypt.hash(password,10);
+        user.password = hash;
+        await user.save();
+        return res.status(200).json({message : "updated"});  
+
+  /*  User.findOneAndUpdate(req.user._id,req.body)
     .then((u) => {
-        res.status(200).json({ message: "updated"});
+        const password =  req.body.password;
+        const hash = bcrypt.hash(password,10);    
+        u.password = hash
+        u.save()
+        res.status(200).json({ message: u});
        /* User.findById(req.user._id)
         .then((u1) => {
             res.status(200).json(u1);
         })
         .catch((err) => {
             res.status(500).json({ error: err});
-        });*/
+        });
     })
     .catch((err) => {
         res.status(500).json({ error: err});
-    });
+    });*/
 }
 
 export async function changepassword (req,res) {
