@@ -44,7 +44,9 @@ app.use("/img",express.static('public/images'));
 
 app.use('/user',userRoutes);
 app.use('/course',courseRoutes)
-
+app.get('/', function(req,res) {
+  res.send("welcome to najahni")
+});
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
