@@ -29,7 +29,16 @@ export function getAllCourses (req,res) {
         res.status(500).json({error : err});
     })
 }
-
+export function getCourseById (req,res) {
+    const courseid = req.params.id;
+    Course.find({_id:courseid,isArchived : false}).populate("sections")
+    .then((courses) => {
+        res.status(200).json({courses : courses});
+    })
+    .catch((err) => {
+        res.status(500).json({error : err});
+    })
+}
 export function getCoursesByFields (req,res) {
     Course.find({fields: req.body.fields})
     .then((courses) => {

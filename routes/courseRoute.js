@@ -1,6 +1,6 @@
 import express from "express";
 import multer from '../middleware/multer-config.js';
-import { archivedMyCourse, createCourse, getAllCourses, getCoursesByFields, getMyOwnerCourses, searchCourse, updateMyCourses } from "../controllers/courseController.js";
+import { archivedMyCourse, createCourse, getAllCourses, getCourseById, getCoursesByFields, getMyOwnerCourses, searchCourse, updateMyCourses } from "../controllers/courseController.js";
 import { protect, trainer } from "../middleware/autorization.js";
 
 const router = express.Router();
@@ -8,6 +8,10 @@ const router = express.Router();
 router
 .route("/add-course")
 .post(protect,trainer,multer,createCourse)
+
+router
+.route("/course/:id")
+.get(getCourseById)
 
 router
 .route("/getall")

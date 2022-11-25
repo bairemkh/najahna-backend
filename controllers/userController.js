@@ -134,14 +134,18 @@ export async function editProfileImage(req,res) {
 }
 
 export async function editProfile (req,res) {
-    const password = req.body.password;
-    const user =  await User.findByIdAndUpdate(req.user._id,req.body);
-    
-        
-        const hash = await bcrypt.hash(password,10);
-        user.password = hash;
-        await user.save();
-        return res.status(200).json({message : "updated"});  
+    try {
+        //const password = req.body.password;
+        const user =  await User.findByIdAndUpdate(req.user._id,req.body);
+       // const hash = await bcrypt.hash(password,10);
+        //user.password = hash;
+       // await user.save();
+        return res.status(200).json({message : "updated"});
+    } catch(e){
+        res.status(500).json({Error:"Server error"});
+    }
+
+  
 
   /*  User.findOneAndUpdate(req.user._id,req.body)
     .then((u) => {
@@ -180,7 +184,12 @@ export async function changepassword (req,res) {
 }
 
 export async function deleteaccount (req,res) {
-    await User.deleteOne(req.user._id);
+    try{
+        await User.deleteOne(req.user._id);
     res.status(200).json({message : "account deleted"});
+    }catch(e){
+        res.status(500).json({Error:"Server error"});
+    }
+    
 
 }

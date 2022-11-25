@@ -42,7 +42,17 @@ const courseSchema =  new Schema(
             type: Boolean,
             required: false,
             default: false
-        }
+        },
+        lesson_number:{
+            type: Number,
+            required: false,
+            default:0
+        },
+        sections: [{
+            type:Schema.Types.ObjectId,
+            ref: 'Section',
+            required: false
+        }]
 
     },
     {
