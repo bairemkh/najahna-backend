@@ -8,6 +8,7 @@ dotenv.config()
 
 import userRoutes from './routes/userRoute.js';
 import courseRoutes from './routes/courseRoute.js'
+import sectionRoutes from './routes/sectionRoute.js'
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import { createRequire } from "module";
@@ -44,7 +45,10 @@ app.use("/img",express.static('public/images'));
 
 app.use('/user',userRoutes);
 app.use('/course',courseRoutes)
-
+app.use('/section',sectionRoutes)
+app.get('/', function(req,res) {
+  res.send("welcome to najahni")
+});
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);

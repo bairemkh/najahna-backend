@@ -29,6 +29,42 @@ export function getAllCourses (req,res) {
         res.status(500).json({error : err});
     })
 }
+export function getCourseById (req,res) {
+    const courseid = req.params.id;
+    Course.find({_id:courseid,isArchived : false}).populate("sections")
+    .then((courses) => {
+        res.status(200).json({courses : courses});
+    })
+    .catch((err) => {
+        res.status(500).json({error : err});
+    })
+}
+export function getCoursesByFields (req,res) {
+    Course.find({fields: req.body.fields})
+    .then((courses) => {
+        res.status(200).json({courses : courses});
+    })
+    .catch((err) => {
+        res.status(500).json({error : err});
+    })
+}
+
+export function searchCourse(req,res) {
+    const search = req.body.search;
+    Course.find({title: { $regex: search, $options: "i" }})
+    .then((courses) => {
+        if(courses.length === 0){
+            res.status(404).json({message : "Not found"});
+        } else {
+            
+            res.status(200).json({courses : courses});
+        }
+        
+    })
+    .catch((err) => {
+        res.status(500).json({error : err});
+    })
+}
 
 export function getMyOwnerCourses (req,res) {
     Course.find({idowner: req.user._id})

@@ -39,6 +39,14 @@ const userSchema =  new Schema(
             type: [String],
             enum: ['Science','Programming','Computing','Mechanics','Business','Soft skills','Language','Arts','Multimedia'],
             required: true
+        },
+        wallet:{
+            type: Number,
+            required: false,
+        },
+        file:{
+            type:String,
+            required:false
         }
 
     },
