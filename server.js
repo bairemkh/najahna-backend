@@ -9,6 +9,7 @@ dotenv.config()
 import userRoutes from './routes/userRoute.js';
 import courseRoutes from './routes/courseRoute.js'
 import sectionRoutes from './routes/sectionRoute.js'
+import lessonRoutes from './routes/lessonRoute.js'
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import { createRequire } from "module";
@@ -42,10 +43,12 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/img",express.static('public/images'));
+app.use("/vid",express.static('public/videos'));
 
 app.use('/user',userRoutes);
 app.use('/course',courseRoutes)
 app.use('/section',sectionRoutes)
+app.use('/lesson',lessonRoutes)
 app.get('/', function(req,res) {
   res.send("welcome to najahni")
 });
