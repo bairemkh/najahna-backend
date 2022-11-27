@@ -191,5 +191,29 @@ export async function deleteaccount (req,res) {
         res.status(500).json({Error:"Server error"});
     }
     
+}
 
+export async function signinwithgoogle (req,res) {
+    try {
+        const email = req.body.email;
+        const userfound =  await User.findOne({email: email})
+        if(userfound) {
+            const payload = {id:userfound.id};
+            const token = jwt.sign(payload,process.env.JWT_SECRET, {
+                expiresIn: 60 * 60 * 24,
+            });
+            res.status(200).json({token: token});
+        }
+
+        const user = await User.create(req.body);
+        const payload = {id:user.id};
+        const token = jwt.sign(payload,process.env.JWT_SECRET, {
+            expiresIn: 60 * 60 * 24,
+        });
+        await user.save();
+        res.status(200).json({message: "connected with google account",token: token})
+
+    }catch(e){
+        res.status(500).json({Error:"Server error"});
+    }
 }
