@@ -21,7 +21,9 @@ export function createCourse (req, res) {
 }
 
 export function getAllCourses (req,res) {
-    Course.find({isArchived : false}).populate("idowner")
+    Course.find({isArchived : false})
+    .populate("idowner")
+    .populate("sections")
     .then((courses) => {
         res.status(200).json({courses : courses});
     })

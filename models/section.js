@@ -10,7 +10,12 @@ const sectionSchema = new Schema(
         courseid:{
             type: Schema.Types.ObjectId,
             required: false
-        }
+        },
+        lessons: [{
+            type:Schema.Types.ObjectId,
+            ref: 'Lesson',
+            required: false
+        }]
 
     },
     {

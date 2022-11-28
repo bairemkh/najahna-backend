@@ -4,7 +4,7 @@ import upload from "../middleware/storage-video.js";
 const router = express.Router();
 
 router
-.route("/add-lesson")
+.route("/add-lesson/:id")
 .post(upload.single("video"),addlesson)
 
 export default router;

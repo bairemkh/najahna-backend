@@ -22,3 +22,14 @@ export async function addSection (req,res) {
         return res.status(200).json({success : true});  
     }
 }
+
+export async function getSectionById (req,res) {
+    const sectionid = req.params.id;
+    Section.findById(sectionid).populate("lessons")
+    .then((section) => {
+        res.status(200).json({section : section});
+    })
+    .catch((err) => {
+        res.status(500).json({error : err});
+    })
+}
