@@ -9,7 +9,11 @@ const lessonSchema = new Schema (
         },
         video :{
             type: String,
-            required: true
+            required: false
+        },
+        sectionid:{
+            type: Schema.Types.ObjectId,
+            required: false
         }
     }
 );
