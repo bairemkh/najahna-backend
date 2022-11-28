@@ -50,8 +50,34 @@
             "items": {
               "type": "string"
             },
-            "enum": "-Science - Programming - Computing - Mechanics - Business - Business - Soft skills - Language - Arts - Multimedia",
+            "enum": "-Science - Programming - Computing - Mechanics - Business  - Soft skills - Language - Arts - Multimedia",
             "required": true
+          }
+        }
+      },
+      "Course": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "required": "true"
+          },
+          "description": {
+            "type": "string",
+            "required": true
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "enum": "-Science - Programming - Computing - Mechanics - Business -Soft skills - Language - Arts - Multimedia"
+          },
+          "level": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "enum": "-Beginner - Amateur - Advanced"
           }
         }
       }
@@ -176,6 +202,19 @@
             }
           }
         ]
+      }
+    },
+    "/course/getall": {
+      "get": {
+        "tags": [
+          "Courses"
+        ],
+        "summary": "Create course",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
       }
     }
   }
