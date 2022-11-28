@@ -3,11 +3,7 @@
   "info": {
     "version": "1.0.0",
     "title": "Najahni backend documentation",
-    "description": "My User Project Application API",
-    "license": {
-      "name": "MIT",
-      "url": "https://opensource.org/licenses/MIT"
-    }
+    "description": "My User Project Application API"
   },
   "components": {
     "schemas": {
@@ -120,6 +116,63 @@
             "name": "body",
             "schema": {
               "$ref": "#/components/schemas/User"
+            }
+          }
+        ]
+      }
+    },
+    "/user/reset-password": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "reset password",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "otp": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/user/verify-account": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "verify account",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                }
+              }
             }
           }
         ]
