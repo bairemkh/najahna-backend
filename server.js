@@ -11,7 +11,6 @@ import courseRoutes from './routes/courseRoute.js'
 import sectionRoutes from './routes/sectionRoute.js'
 import lessonRoutes from './routes/lessonRoute.js'
 import swaggerUi from 'swagger-ui-express';
-import swaggerJSDoc from 'swagger-jsdoc';
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const swaggerDocument = require('./swagger.json')  
