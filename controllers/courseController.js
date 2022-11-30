@@ -69,12 +69,12 @@ export function searchCourse(req,res) {
 }
 
 export function getMyOwnerCourses (req,res) {
-    Course.find({idowner: req.user._id})
+    Course.find({idowner: req.user._id}).populate("idowner")
     .then((courses) => {
         res.status(200).json({courses : courses});
     })
     .catch((err) => {
-        res.status(500).json({error : err})
+        res.status(500).json({error : err}) 
     })
 }
 
@@ -97,4 +97,61 @@ export function archivedMyCourse (req,res) {
     .catch((err) => {
         res.status(500).json({ error: err});
     });
+}
+
+export async function enrollInCourse (req,res) {
+    try {
+        const user = await User.findOne({_id: req.user._id});
+        const course = await Course.findOne({_id: req.params._id})
+        if(user.courses.length == 0){
+            user.courses.push(course._id);
+            await user.save();
+            return res.status(200).json({message : "you are enrolled one"})
+        }else{
+            user.courses.forEach(async element => {
+
+           console.log("HEEREEE" + element)
+           console.log(course.id)
+           console.log(element != course._id);
+                if(element != course.id){
+                    //console.log(element != course._id);
+                    await User.findByIdAndUpdate({
+                        _id: user.id
+                    },
+                    {
+                        $push: {
+                            courses: course._id,
+                        },
+                    }
+                )
+                
+                await user.save()
+                return res.status(200).json({message : "you are enrolled"})
+                } else {
+                    return res.status(403).json({message : "already exisit !!"})
+                }
+        
+            
+        });
+        }
+
+    } catch(e){
+        res.status(500).json({Error:e});
+    }
+
+}
+
+export async function getMyCourseslist(req,res) {
+    const user = await User.findById(req.user.id).populate({
+        path: "courses",
+        populate: {
+           path: "idowner"
+           //select: { body: 1 }
+        }
+     });
+   // courses.populate("course")
+  // const user = await courses.populate("courses");
+   const mycourses = user.courses;
+
+ res.status(200).json({courses : mycourses});
 }

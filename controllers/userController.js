@@ -202,18 +202,20 @@ export async function signinwithgoogle (req,res) {
             const token = jwt.sign(payload,process.env.JWT_SECRET, {
                 expiresIn: 60 * 60 * 24,
             });
-            res.status(200).json({token: token});
+            res.status(200).json({token: token,role: userfound.role});
+        } else {
+
+            const user = await User.create(req.body);
+            const payload = {id:user.id};
+            const token = jwt.sign(payload,process.env.JWT_SECRET, {
+                expiresIn: 60 * 60 * 24,
+            });
+            await user.save();
+            res.status(200).json({message: "connected with google account",token: token,role: user.role})
         }
 
-        const user = await User.create(req.body);
-        const payload = {id:user.id};
-        const token = jwt.sign(payload,process.env.JWT_SECRET, {
-            expiresIn: 60 * 60 * 24,
-        });
-        await user.save();
-        res.status(200).json({message: "connected with google account",token: token})
 
     }catch(e){
-        res.status(500).json({Error:"Server error"});
+        res.status(500).json({Error:e});
     }
 }

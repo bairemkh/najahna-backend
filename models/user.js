@@ -38,7 +38,7 @@ const userSchema =  new Schema(
         fields:{
             type: [String],
             enum: ['Science','Programming','Computing','Mechanics','Business','Soft skills','Language','Arts','Multimedia'],
-            required: true
+            required: false
         },
         wallet:{
             type: Number,
@@ -47,7 +47,12 @@ const userSchema =  new Schema(
         file:{
             type:String,
             required:false
-        }
+        },
+        courses:[{
+            type:Schema.Types.ObjectId,
+            ref: 'Course',
+            required: false,
+        }]
 
     },
     {

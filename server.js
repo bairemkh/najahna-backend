@@ -44,6 +44,7 @@ app.use(express.urlencoded({extended: true}));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/img",express.static('public/images'));
 app.use("/vid",express.static('public/videos'));
+app.use("/file",express.static('public/files'));
 
 app.use('/user',userRoutes);
 app.use('/course',courseRoutes)
