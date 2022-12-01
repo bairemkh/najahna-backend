@@ -108,31 +108,42 @@ export async function enrollInCourse (req,res) {
             await user.save();
             return res.status(200).json({message : "you are enrolled one"})
         }else{
-            user.courses.forEach(async element => {
+            try {
+                user.courses.forEach(async element => {
+                         if(element != course.id){
+                             //console.log(element != course._id);
+                             await User.findByIdAndUpdate({
+                                 _id: user.id
+                             },
+                             {
+                                 $push: {
+                                     courses: course._id,
+                                 },
+                             }
+                         )
+                         await Course.findByIdAndUpdate(
+                            {
+                                _id: course.id
+                            },
+                            {
+                                $push: {
+                                    students: user._id,
+                                },
+                            }
+                         )
+                         
+                        // await user.save()
+                         return res.status(200).json({message : "you are enrolled"})
+                         } else {
+                             return res.status(403).json({message : "already exisit !!"})
+                         }
+                 
+                     
+                 });
+            }catch(e) {
+                res.status(500).json({Error:e});
+            }
 
-           console.log("HEEREEE" + element)
-           console.log(course.id)
-           console.log(element != course._id);
-                if(element != course.id){
-                    //console.log(element != course._id);
-                    await User.findByIdAndUpdate({
-                        _id: user.id
-                    },
-                    {
-                        $push: {
-                            courses: course._id,
-                        },
-                    }
-                )
-                
-                await user.save()
-                return res.status(200).json({message : "you are enrolled"})
-                } else {
-                    return res.status(403).json({message : "already exisit !!"})
-                }
-        
-            
-        });
         }
 
     } catch(e){
