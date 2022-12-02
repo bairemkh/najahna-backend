@@ -52,6 +52,12 @@ const courseSchema =  new Schema(
             type:Schema.Types.ObjectId,
             ref: 'Section',
             required: false
+        }],
+        students: [{
+            type:Schema.Types.ObjectId,
+            ref: 'Course',
+            required: false,
+            default: []
         }]
 
     },

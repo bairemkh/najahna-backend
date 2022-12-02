@@ -33,3 +33,22 @@ export async function getSectionById (req,res) {
         res.status(500).json({error : err});
     })
 }
+
+export async function editSection (req,res) {
+    Section.findOneAndUpdate(req.params._id,req.body)
+    .then((c) => {
+        res.status(200).json({ message: "Section is updated !"});
+    })
+    .catch((err) => {
+        res.status(500).json({ error: err});
+    });
+}
+
+export async function deleteSection (req,res) {
+    try{
+        await Section.deleteOne(req.section._id);
+    res.status(200).json({message : "section deleted"});
+    }catch(e){
+        res.status(500).json({Error:"Server error"});
+    }
+}
