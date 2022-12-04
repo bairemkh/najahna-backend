@@ -13,16 +13,21 @@ export async function protect (req,res,next) {
         console.log(decoded)
        // const user = await User.findOne({"_id":decoded.id});
          const user = await User.findById(decoded.id);
-        req.user = user;
-       next();
+         req.user = user;
+         next();
     } catch (err) {
         res.status(302).json({success: false, message: "not logged in"});
     }
 }
 
 export function trainer (req,res,next) {
-    if(req.user.role !== "Trainer") {
-        res.status(302).json({ success: false, message: "you're not trainer"});
+    try {
+        if(req.user.role !== "Trainer") {
+            return res.status(302).json({ success: false, message: "you're not trainer"});
+        } 
+       next();
     }
-   next();
+     catch (error) {
+        res.status(302).json({success: false, message: error});
+    }
 }

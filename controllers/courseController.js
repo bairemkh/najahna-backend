@@ -8,7 +8,7 @@ export function createCourse (req, res) {
         fields: req.body.fields,
         level: req.body.level,
         isPaid: req.body.isPaid,
-        image: `${req.protocol}://${req.get('host')}/img/${req.file.filename}`,
+        image: `/img/${req.file.filename}`,
         price: req.body.price,
         idowner: req.user._id
     })
@@ -69,7 +69,17 @@ export function searchCourse(req,res) {
 }
 
 export function getMyOwnerCourses (req,res) {
-    Course.find({idowner: req.user._id}).populate("idowner")
+    Course.find({idowner: req.user._id,isArchived: false}).populate("idowner")
+    .then((courses) => {
+        res.status(200).json({courses : courses});
+    })
+    .catch((err) => {
+        res.status(500).json({error : err}) 
+    })
+}
+
+export function getMyOwnerCoursesArchived (req,res) {
+    Course.find({idowner: req.user._id,isArchived: true}).populate("idowner")
     .then((courses) => {
         res.status(200).json({courses : courses});
     })
@@ -106,9 +116,9 @@ export async function enrollInCourse (req,res) {
         if(user.courses.length == 0){
             user.courses.push(course._id);
             await user.save();
-            return res.status(200).json({message : "you are enrolled one"})
+           return res.status(200).json({message : "you are enrolled one"})
         }else{
-            try {
+           
                 user.courses.forEach(async element => {
                          if(element != course.id){
                              //console.log(element != course._id);
@@ -121,28 +131,15 @@ export async function enrollInCourse (req,res) {
                                  },
                              }
                          )
-                         await Course.findByIdAndUpdate(
-                            {
-                                _id: course.id
-                            },
-                            {
-                                $push: {
-                                    students: user._id,
-                                },
-                            }
-                         )
                          
-                        // await user.save()
-                         return res.status(200).json({message : "you are enrolled"})
+                        await user.save()
+                        return res.status(200).json({message : "you are enrolled"})
                          } else {
-                             return res.status(403).json({message : "already exisit !!"})
+                            return res.status(403).json({message : "already exisit !!"})
                          }
                  
                      
                  });
-            }catch(e) {
-                res.status(500).json({Error:e});
-            }
 
         }
 
