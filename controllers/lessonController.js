@@ -9,7 +9,7 @@ export async function addlesson(req,res) {
         return res.status(404).json({error: "Section not found !"});
     }else {
         const lesson = await Lesson.create(req.body);
-        lesson.video = `${req.protocol}://${req.get('host')}/vid/${req.file.filename}`;
+        lesson.video = `/vid/${req.file.filename}`;
         lesson.sectionid = sectionid;
         await Section.findByIdAndUpdate({
             _id: sectionid

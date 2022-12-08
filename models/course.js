@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { SchemaType } from "mongoose";
 const { Schema, model} = mongoose;
 
 const courseSchema =  new Schema(
@@ -58,6 +58,10 @@ const courseSchema =  new Schema(
             ref: 'Course',
             required: false,
             default: []
+        }],
+        comments:[{
+            type: Schema.Types.ObjectId,
+            ref: "Comment"
         }]
 
     },
