@@ -123,7 +123,7 @@ export async function editProfileImage(req,res) {
     try{
         const user = await User.findById(req.user._id)
         const image =  await req.file.filename;
-        user.image = `${req.protocol}://${req.get('host')}/img/${image}`;
+        user.image = `/img/${image}`;
         user.save();
         res.status(200).json({message : "image changed"});
 

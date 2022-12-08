@@ -29,7 +29,7 @@ router
 .route("/mycourses")
 .get(protect,trainer,getMyOwnerCourses)
 
-router
+router 
 .route("/mycourses-archived")
 .get(protect,trainer,getMyOwnerCoursesArchived)
 

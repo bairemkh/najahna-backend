@@ -23,7 +23,20 @@ export function createCourse (req, res) {
 export function getAllCourses (req,res) {
     Course.find({isArchived : false})
     .populate("idowner")
-    .populate("sections")
+    .populate({
+        path: "sections",
+        populate: {
+           path: "lessons"
+           //select: { body: 1 }
+        }
+     })
+     .populate({
+        path: "comments",
+        populate: {
+           path: "userId"
+           //select: { body: 1 }
+        }
+     })
     .then((courses) => {
         res.status(200).json({courses : courses});
     })
@@ -69,7 +82,20 @@ export function searchCourse(req,res) {
 }
 
 export function getMyOwnerCourses (req,res) {
-    Course.find({idowner: req.user._id,isArchived: false}).populate("idowner")
+    Course.find({idowner: req.user._id,isArchived: false}).populate("idowner").populate({
+        path: "sections",
+        populate: {
+           path: "lessons"
+           //select: { body: 1 }
+        }
+     })
+     .populate({
+        path: "comments",
+        populate: {
+           path: "userId"
+           //select: { body: 1 }
+        }
+     })
     .then((courses) => {
         res.status(200).json({courses : courses});
     })
@@ -113,16 +139,17 @@ export async function enrollInCourse (req,res) {
     try {
         const user = await User.findOne({_id: req.user._id});
         const course = await Course.findOne({_id: req.params._id})
+        console.log("course === "+course._id)
         if(user.courses.length == 0){
             user.courses.push(course._id);
             await user.save();
            return res.status(200).json({message : "you are enrolled one"})
-        }else{
-           
-                user.courses.forEach(async element => {
-                         if(element != course.id){
-                             //console.log(element != course._id);
-                             await User.findByIdAndUpdate({
+        }else
+            {
+                const x = user.courses.find(cou=>cou._id==req.params._id)
+                console.log(x);
+                if(x==undefined){
+                     await User.findByIdAndUpdate({
                                  _id: user.id
                              },
                              {
@@ -131,6 +158,16 @@ export async function enrollInCourse (req,res) {
                                  },
                              }
                          )
+                         await user.save()
+                    return res.status(200).json({message : "you are enrolled"})
+                }else{
+                    return res.status(403).json({message : "already exisit !!"})
+                }
+                
+               /* user.courses.forEach(async element => {
+                         if(element != course.id){
+                             //console.log(element != course._id);
+                            
                          
                         await user.save()
                         return res.status(200).json({message : "you are enrolled"})
@@ -139,9 +176,9 @@ export async function enrollInCourse (req,res) {
                          }
                  
                      
-                 });
+                 });*/
 
-        }
+            }
 
     } catch(e){
         res.status(500).json({Error:e});
@@ -152,11 +189,13 @@ export async function enrollInCourse (req,res) {
 export async function getMyCourseslist(req,res) {
     const user = await User.findById(req.user.id).populate({
         path: "courses",
-        populate: {
-           path: "idowner"
-           //select: { body: 1 }
-        }
-     });
+         populate: {
+            path: "idowner",  
+         },
+         populate:{
+            path:"sections"
+         }    
+     })
    // courses.populate("course")
   // const user = await courses.populate("courses");
    const mycourses = user.courses;
