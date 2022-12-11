@@ -29,7 +29,7 @@ mongoose.set('debug', true);
 mongoose.Promise = global.Promise;
 
 mongoose
-  .connect(`mongodb://localhost:27017/${databaseName}`)
+  .connect(`mongodb://127.0.0.1:27017/${databaseName}`)
   .then(() => {
     console.log(`Connected to ${databaseName}`);
   })
