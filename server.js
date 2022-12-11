@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import morgan from 'morgan';
 import cors from 'cors';
 import * as dotenv from 'dotenv';
+import { Server } from "socket.io";
 
 dotenv.config()
 
@@ -19,7 +20,7 @@ const swaggerDocument = require('./swagger.json')
 
 
 
-
+const io = new Server();
 const app = express();
 const port = process.env.PORT || 9090;
 
@@ -54,6 +55,26 @@ app.use('/comment',commentRoutes)
 app.get('/', function(req,res) {
   res.send("welcome to najahni")
 });
+
+
+
+io.on("connection", (socket) => {
+  console.log(`socket ${socket.id} connected`);
+
+  // send an event to the client
+  socket.emit("foo", "bar");
+
+  socket.on("foobar", () => {
+    // an event was received from the client
+  });
+
+  // upon disconnection
+  socket.on("disconnect", (reason) => {
+    console.log(`socket ${socket.id} disconnected due to ${reason}`);
+  });
+});
+
+io.listen(3000);
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
