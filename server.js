@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { json } from 'express';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 import cors from 'cors';
@@ -12,6 +12,8 @@ import courseRoutes from './routes/courseRoute.js'
 import sectionRoutes from './routes/sectionRoute.js'
 import lessonRoutes from './routes/lessonRoute.js'
 import commentRoutes from './routes/commentRoute.js'
+import messageRoutes from './routes/messageRoute.js'
+import {createMessageSocket} from './controllers/messageController.js'
 import swaggerUi from 'swagger-ui-express';
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
@@ -52,6 +54,7 @@ app.use('/course',courseRoutes)
 app.use('/section',sectionRoutes)
 app.use('/lesson',lessonRoutes)
 app.use('/comment',commentRoutes)
+app.use('/message',messageRoutes)
 app.get('/', function(req,res) {
   res.send("welcome to najahni")
 });
@@ -61,15 +64,9 @@ const io = new Server()
 io.on("connection", (socket) => {
   console.log(`socket ${socket.id} connected`);
 
-  // send an event to the client
-  socket.emit("foo", "bar");
-
-  socket.on("foobar", () => {
+  socket.on("onMessage", (msg) => {
     // an event was received from the client
-  });
-  socket.on("message", () => {
-    // an event was received from the client
-    socket.emit('message',{message:"test"})
+    socket.emit('onMessage',createMessageSocket(msg))
   });
 
   // upon disconnection
@@ -79,7 +76,6 @@ io.on("connection", (socket) => {
 });
 
 io.listen(3000,()=>{
-  console.log(`Socket running at ws://localhost:${3000}/`);
 });
 
 app.listen(port, () => {
