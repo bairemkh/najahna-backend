@@ -20,7 +20,7 @@ const swaggerDocument = require('./swagger.json')
 
 
 
-const io = new Server();
+
 const app = express();
 const port = process.env.PORT || 9090;
 
@@ -56,7 +56,7 @@ app.get('/', function(req,res) {
   res.send("welcome to najahni")
 });
 
-
+const io = new Server()
 
 io.on("connection", (socket) => {
   console.log(`socket ${socket.id} connected`);
@@ -67,6 +67,10 @@ io.on("connection", (socket) => {
   socket.on("foobar", () => {
     // an event was received from the client
   });
+  socket.on("message", () => {
+    // an event was received from the client
+    socket.emit('message',{message:"test"})
+  });
 
   // upon disconnection
   socket.on("disconnect", (reason) => {
@@ -74,7 +78,9 @@ io.on("connection", (socket) => {
   });
 });
 
-io.listen(3000);
+io.listen(3000,()=>{
+  console.log(`Socket running at ws://localhost:${3000}/`);
+});
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
