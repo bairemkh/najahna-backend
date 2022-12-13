@@ -14,8 +14,17 @@ export function createMessage(req, res){
     })
 
 }
+export function getAllMessages(req,res){
+    let messages = Message.find({}).then(items=>{
+        res.status(200).json(items)
+    }).catch(err=>{
+        res.status(500).json({error:err})
+    })
+    
+}
+
 export function createMessageSocket(msg){
-    Message.create({
+    /*Message.create({
         senderid:msg.senderid,
         receiverid:msg.receiverid,
         msgContent:msg.msgContent
@@ -23,6 +32,6 @@ export function createMessageSocket(msg){
         return newMessage
     }).catch((err) => {
         return err
-    })
-    return {message:msg}
+    })*/
+    return {msg}
 }

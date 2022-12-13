@@ -1,6 +1,7 @@
 import express, { json } from 'express';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
+import { createServer } from "http";
 import cors from 'cors';
 import * as dotenv from 'dotenv';
 import { Server } from "socket.io";
@@ -59,26 +60,27 @@ app.get('/', function(req,res) {
   res.send("welcome to najahni")
 });
 
-const io = new Server()
+const httpServer = createServer(app);
+const io = new Server(httpServer)
 
 io.on("connection", (socket) => {
   console.log(`socket ${socket.id} connected`);
 
+  
+
   socket.on("onMessage", (msg) => {
     // an event was received from the client
-    socket.emit('onMessage',createMessageSocket(msg))
+    console.log(msg);
+    socket.emit('send',createMessageSocket(msg))
+    socket.broadcast.emit('send',createMessageSocket(msg))
   });
-
   // upon disconnection
   socket.on("disconnect", (reason) => {
     console.log(`socket ${socket.id} disconnected due to ${reason}`);
   });
 });
 
-io.listen(3000,()=>{
-});
 
-app.listen(port, () => {
+httpServer.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
-    console.log("hello");
   });
