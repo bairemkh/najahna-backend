@@ -1,8 +1,10 @@
-import express from 'express';
+import express, { json } from 'express';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
+import { createServer } from "http";
 import cors from 'cors';
 import * as dotenv from 'dotenv';
+import { Server } from "socket.io";
 
 dotenv.config()
 
@@ -11,8 +13,9 @@ import courseRoutes from './routes/courseRoute.js'
 import sectionRoutes from './routes/sectionRoute.js'
 import lessonRoutes from './routes/lessonRoute.js'
 import commentRoutes from './routes/commentRoute.js'
+import messageRoutes from './routes/messageRoute.js'
+import {createMessageSocket} from './controllers/messageController.js'
 import swaggerUi from 'swagger-ui-express';
-import swaggerJSDoc from 'swagger-jsdoc';
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const swaggerDocument = require('./swagger.json')  
@@ -30,7 +33,7 @@ mongoose.set('debug', true);
 mongoose.Promise = global.Promise;
 
 mongoose
-  .connect(`mongodb://localhost:27017/${databaseName}`)
+  .connect(`mongodb://127.0.0.1:27017/${databaseName}`)
   .then(() => {
     console.log(`Connected to ${databaseName}`);
   })
@@ -52,11 +55,32 @@ app.use('/course',courseRoutes)
 app.use('/section',sectionRoutes)
 app.use('/lesson',lessonRoutes)
 app.use('/comment',commentRoutes)
+app.use('/message',messageRoutes)
 app.get('/', function(req,res) {
   res.send("welcome to najahni")
 });
 
-app.listen(port, () => {
+const httpServer = createServer(app);
+const io = new Server(httpServer)
+
+io.on("connection", (socket) => {
+  console.log(`socket ${socket.id} connected`);
+
+  
+
+  socket.on("onMessage", (msg) => {
+    // an event was received from the client
+    console.log(msg);
+    socket.emit('send',createMessageSocket(msg))
+    socket.broadcast.emit('send',createMessageSocket(msg))
+  });
+  // upon disconnection
+  socket.on("disconnect", (reason) => {
+    console.log(`socket ${socket.id} disconnected due to ${reason}`);
+  });
+});
+
+
+httpServer.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
-    console.log("hello");
   });

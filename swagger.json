@@ -3,10 +3,84 @@
   "info": {
     "version": "1.0.0",
     "title": "Najahni backend documentation",
-    "description": "My User Project Application API",
-    "license": {
-      "name": "MIT",
-      "url": "https://opensource.org/licenses/MIT"
+    "description": "My User Project Application API"
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "properties": {
+          "firstname": {
+            "type": "string",
+            "required": "true"
+          },
+          "lastname": {
+            "type": "string",
+            "required": "true"
+          },
+          "email": {
+            "type": "string",
+            "required": "true"
+          },
+          "password": {
+            "type": "string",
+            "required": "true"
+          },
+          "image": {
+            "type": "string",
+            "required": "false"
+          },
+          "isVerified": {
+            "type": "boolean",
+            "default": false
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "Student",
+              "Trainer"
+            ],
+            "default": "Student"
+          },
+          "otp": {
+            "type": "string",
+            "required": "false"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "enum": "-Science - Programming - Computing - Mechanics - Business  - Soft skills - Language - Arts - Multimedia",
+            "required": true
+          }
+        }
+      },
+      "Course": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "required": "true"
+          },
+          "description": {
+            "type": "string",
+            "required": true
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "enum": "-Science - Programming - Computing - Mechanics - Business -Soft skills - Language - Arts - Multimedia"
+          },
+          "level": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "enum": "-Beginner - Amateur - Advanced"
+          }
+        }
+      }
     }
   },
   "host": "localhost:9090",
@@ -49,6 +123,98 @@
             }
           }
         ]
+      }
+    },
+    "/user/signup": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "signup",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/components/schemas/User"
+            }
+          }
+        ]
+      }
+    },
+    "/user/reset-password": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "reset password",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "otp": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/user/verify-account": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "verify account",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/course/getall": {
+      "get": {
+        "tags": [
+          "Courses"
+        ],
+        "summary": "Create course",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
       }
     }
   }
