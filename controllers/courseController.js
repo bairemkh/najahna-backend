@@ -206,7 +206,8 @@ export async function getMyCourseslist(req,res) {
 
 
 export async function initPayement(req,res) {
-    const body = {
+    try {
+            const body = {
         "receiverWalletId": "6394718108ec811bcda333df",
         "description": "test api konnect",
         "amount": req.body.amount,
@@ -228,4 +229,7 @@ export async function initPayement(req,res) {
     
     console.log(data);
     res.status(response.status).json(data);
+    }catch(err){
+        res.status(500).json(err);
+    }
 }
