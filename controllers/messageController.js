@@ -22,6 +22,16 @@ export function getAllMessages(req,res){
     })
     
 }
+export function getContacts(req,res) {
+    Message.find({}).then(allMessages=>{
+        let ownMessages = allMessages.filter(message=>message.receiverid===req.user._id||message.senderid===req.user._id)
+        console.log(ownMessages);
+        User.find({}).then(allUsers=>{
+           let contacts = allUsers.filter(u=>ownMessages.some(m=>(m.receiverid===u.id||m.senderid===u.id)&& u==req.user))
+           res.status(200).json(contacts)
+        }).catch(err=>{res.status(500).json(err)})
+    }).catch(error=>res.status(501).json(error))
+}
 
 export function createMessageSocket(msg){
     /*Message.create({
