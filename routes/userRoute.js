@@ -3,10 +3,11 @@ import nodemailer from "nodemailer"
 import hbs from "nodemailer-express-handlebars"
 import path from "path";
 
-import { profile, signin, signup,forgetPassword,resetPassword,verifyAccount,editProfile,changepassword,deleteaccount, editProfileImage, signinwithgoogle } from '../controllers/userController.js';
+import { profile, signin, signup,forgetPassword,resetPassword,verifyAccount,editProfile,changepassword,deleteaccount, editProfileImage, signinwithgoogle, becomeTrainer } from '../controllers/userController.js';
 
 import { protect, trainer } from '../middleware/autorization.js';
 import multer from '../middleware/multer-config.js';
+import upload from "../middleware/storage-file.js";
 
 const router = express.Router();
 
@@ -41,6 +42,10 @@ router
 router
 .route("/change-photo")
 .post(protect,multer,editProfileImage)
+
+router
+.route("/add-badge")
+.post(protect,upload.single("file"),becomeTrainer)
 
 router
 .route("/change-password")

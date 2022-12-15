@@ -133,6 +133,21 @@ export async function editProfileImage(req,res) {
 
 }
 
+export async function becomeTrainer(req,res) {
+    try{
+        const user = await User.findById(req.user._id)
+        const file =  await req.file.filename;
+        user.file = `/file/${file}`;
+        user.role = "Trainer"
+        user.save();
+        res.status(200).json({message : "Badge uploaded"});
+
+    }catch(e){
+        res.status(500).json({Error:"Server error"});
+    }
+
+}
+
 export async function editProfile (req,res) {
     try {
         //const password = req.body.password;

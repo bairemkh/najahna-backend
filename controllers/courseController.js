@@ -1,6 +1,7 @@
 import Course from "../models/course.js";
 import User from "../models/user.js";
-
+import fetch from "node-fetch";
+import { json } from "express";
 export function createCourse (req, res) {
     Course.create({
         title: req.body.title,
@@ -201,4 +202,34 @@ export async function getMyCourseslist(req,res) {
    const mycourses = user.courses;
 
  res.status(200).json({courses : mycourses});
+}
+
+
+export async function initPayement(req,res) {
+    try {
+            const body = {
+        "receiverWalletId": "6394718108ec811bcda333df",
+        "description": "test api konnect",
+        "amount": req.body.amount,
+        "type": "immediate",
+        "lifespan": 10,
+        "token": "TND"
+    };
+    const response = await fetch('https://api.preprod.konnect.network/api/v2/payments/init-payment',
+     {
+        method: 'POST', 
+        body: JSON.stringify(body),
+        headers: {
+            'x-api-key': '6394718108ec811bcda333de:BZlUxXLfwf8ksN3tmGSem5QeekFxQmw',
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    });
+    const data = await response.json();
+    
+    console.log(data);
+    res.status(response.status).json(data);
+    }catch(err){
+        res.status(500).json(err);
+    }
 }
