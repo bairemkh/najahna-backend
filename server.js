@@ -14,6 +14,7 @@ import sectionRoutes from './routes/sectionRoute.js'
 import lessonRoutes from './routes/lessonRoute.js'
 import commentRoutes from './routes/commentRoute.js'
 import messageRoutes from './routes/messageRoute.js'
+import enrollRoutes from './routes/enrollcourseRoute.js'
 import {createMessageSocket} from './controllers/messageController.js'
 import swaggerUi from 'swagger-ui-express';
 import { createRequire } from "module";
@@ -56,6 +57,7 @@ app.use('/section',sectionRoutes)
 app.use('/lesson',lessonRoutes)
 app.use('/comment',commentRoutes)
 app.use('/message',messageRoutes)
+app.use('/enroll',enrollRoutes)
 app.get('/', function(req,res) {
   res.send("welcome to najahni")
 });
