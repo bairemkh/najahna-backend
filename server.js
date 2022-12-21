@@ -73,8 +73,13 @@ io.on("connection", (socket) => {
   socket.on("onMessage", (msg) => {
     // an event was received from the client
     console.log(msg);
-    socket.emit('send',{msg})
-    socket.broadcast.emit('send',createMessageSocket(msg))
+    socket.emit(msg.receiverid,{msg})
+    socket.broadcast.emit(msg.receiverid,createMessageSocket(msg))
+  });
+  socket.on("notification", (notif) => {
+    // an event was received from the client
+    console.log(notif);
+    socket.broadcast.emit("receive",notif)
   });
   // upon disconnection
   socket.on("disconnect", (reason) => {

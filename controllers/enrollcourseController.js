@@ -70,3 +70,18 @@ export async function getMycoursesEnrolled (req,res) {
        }
     
 }
+
+export async function userProgressInCourse(req,res) {
+    try{
+        const user = await User.findOne({_id: req.user._id});
+        const course = await Course.findOne({_id: req.params._id});
+        const enroll = await Enrollcourse.findOne({courseid:course.id,userid:user.id});
+        console.log(enroll);
+       enroll.progress = enroll.progress + ((enroll.progress + 1)/course.lesson_number);
+       enroll.save();
+       res.status(200).json({message: "Lesson terminated"});
+    }catch(err){
+        res.status(500).json({message: err});
+    }
+
+}
