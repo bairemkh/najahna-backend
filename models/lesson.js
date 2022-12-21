@@ -11,6 +11,10 @@ const lessonSchema = new Schema (
             type: String,
             required: false
         },
+        duration:{
+            type: Number,
+            require: false
+        },
         sectionid:{
             type: Schema.Types.ObjectId,
             required: false

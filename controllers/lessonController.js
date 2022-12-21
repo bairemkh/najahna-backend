@@ -1,5 +1,6 @@
 import Lesson from "../models/lesson.js"
 import Section from "../models/section.js"
+import {getVideoDurationInSeconds} from "get-video-duration"
 
 export async function addlesson(req,res) {
 
@@ -11,6 +12,8 @@ export async function addlesson(req,res) {
         const lesson = await Lesson.create(req.body);
         lesson.video = `/vid/${req.file.filename}`;
         lesson.sectionid = sectionid;
+        lesson.duration = await getVideoDurationInSeconds("http://localhost:9090"+lesson.video);
+          console.log(lesson.duration);
         await Section.findByIdAndUpdate({
             _id: sectionid
         },
@@ -21,6 +24,7 @@ export async function addlesson(req,res) {
         }
     )
         await lesson.save();
+
         return res.status(200).json({success : true, lesson : lesson});  
     }
    /* Lesson.create({
