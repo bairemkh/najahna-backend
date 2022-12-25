@@ -6,12 +6,15 @@ export async function enrollInCourse (req,res) {
     try {
         const user = await User.findOne({_id: req.user._id});
         const course = await Course.findOne({_id: req.params._id})
+        const trainer = await User.findOne({_id: course.idowner})
 
         if(user.courses.length == 0){
             user.courses.push(course._id);
             await user.save();
             const enrollcourse = await Enrollcourse.create({courseid: course._id,userid: user._id})
             enrollcourse.save();
+            trainer.wallet = trainer.wallet + course.price;
+            trainer.save();
             res.status(200).json({message: "Sucess"})
           // return res.status(200).json({message : "you are enrolled one"})
         } else {
@@ -30,6 +33,8 @@ export async function enrollInCourse (req,res) {
                          await user.save()
                          const enrollcourse = await Enrollcourse.create({courseid: course._id,userid: user._id})
                          enrollcourse.save();
+                         trainer.wallet = trainer.wallet + course.price;
+                         trainer.save();
                         // res.status(200).json({message: "Sucess"})
                     return res.status(200).json({message : "you are enrolled"})
                 }else{

@@ -154,7 +154,7 @@ export async function editProfile (req,res) {
         const user =  await User.findByIdAndUpdate(req.user._id,req.body);
        // const hash = await bcrypt.hash(password,10);
         //user.password = hash;
-       // await user.save();
+        await user.save();
         return res.status(200).json({message : "updated"});
     } catch(e){
         res.status(500).json({Error:"Server error"});
