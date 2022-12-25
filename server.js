@@ -16,6 +16,7 @@ import commentRoutes from './routes/commentRoute.js'
 import messageRoutes from './routes/messageRoute.js'
 import enrollRoutes from './routes/enrollcourseRoute.js'
 import {createMessageSocket} from './controllers/messageController.js'
+import {createNotificationSocket} from './controllers/NotificationsController.js'
 import swaggerUi from 'swagger-ui-express';
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
@@ -73,8 +74,21 @@ io.on("connection", (socket) => {
   socket.on("onMessage", (msg) => {
     // an event was received from the client
     console.log(msg);
-    socket.emit('send',{msg})
-    socket.broadcast.emit('send',createMessageSocket(msg))
+    socket.emit(msg.receiverid,{msg})
+    socket.broadcast.emit(msg.receiverid,createMessageSocket(msg))
+  });
+
+  socket.on("onMessageNotif", (notif) => {
+    // an event was received from the client
+    console.log(notif);
+    socket.broadcast.emit(notif.receiverid,notif)
+  });
+
+  socket.on("notification", (notif) => {
+    // an event was received from the client
+    console.log(notif);
+    socket.emit("receive",notif)
+    socket.broadcast.emit("receive",createNotificationSocket(notif))
   });
   // upon disconnection
   socket.on("disconnect", (reason) => {

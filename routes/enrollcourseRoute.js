@@ -1,5 +1,5 @@
 import express from "express";
-import { enrollInCourse, getMycoursesEnrolled } from "../controllers/enrollcourseController.js";
+import { enrollInCourse, getMycoursesCompleted, getMycoursesEnrolled, userProgressInCourse } from "../controllers/enrollcourseController.js";
 import { protect } from '../middleware/autorization.js';
 
 const router = express.Router();
@@ -11,5 +11,13 @@ router
 router
 .route("/getmycourses")
 .get(protect,getMycoursesEnrolled)
+
+router
+.route("/getmycoursescompleted")
+.get(protect,getMycoursesCompleted)
+
+router
+.route("/progress/:_id")
+.post(protect,userProgressInCourse);
 
 export default router;

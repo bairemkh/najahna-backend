@@ -14,6 +14,7 @@ export function createCourse (req, res) {
         idowner: req.user._id
     })
     .then(newCourse => {
+        console.log(newCourse);
         res.status(200).json(newCourse);
     })
     .catch((err) => {

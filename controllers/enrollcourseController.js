@@ -48,7 +48,7 @@ export async function enrollInCourse (req,res) {
 export async function getMycoursesEnrolled (req,res) {
        try{
 
-        const enrollcourse = await Enrollcourse.find({userid: req.user._id}).populate({
+        const enrollcourse = await Enrollcourse.find({userid: req.user._id,progress}).populate({
             path: "courseid",
              populate: [{
                 path: "idowner",
@@ -66,7 +66,48 @@ export async function getMycoursesEnrolled (req,res) {
      res.status(200).json({enrolled : enrollcourse});
 
        }catch(err){
-        res.status(500).json({Error:e});
+        res.status(500).json({Error:err});
        }
     
+}
+
+export async function getMycoursesCompleted (req,res) {
+    try{
+
+     const enrollcourse = await Enrollcourse.find({userid: req.user._id,progress: 1}).populate({
+         path: "courseid",
+          populate: [{
+             path: "idowner",
+            
+          },
+             {path: "sections",
+             populate: {
+                 path: "lessons",  
+              },  
+     }]
+
+
+      })
+ 
+  res.status(200).json({enrolled : enrollcourse});
+
+    }catch(err){
+     res.status(500).json({Error:e});
+    }
+ 
+}
+
+export async function userProgressInCourse(req,res) {
+    try{
+        const user = await User.findOne({_id: req.user._id});
+        const course = await Course.findOne({_id: req.params._id});
+        const enroll = await Enrollcourse.findOne({courseid:course.id,userid:user.id});
+        console.log(enroll);
+       enroll.progress = enroll.progress + ((enroll.progress + 1)/course.lesson_number);
+       enroll.save();
+       res.status(200).json({message: "Lesson terminated"});
+    }catch(err){
+        res.status(500).json({message: err});
+    }
+
 }
