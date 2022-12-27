@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const { Schema, model} = mongoose;
 
-const lessonSchema = new Schema (
+export const lessonSchema = new Schema (
     {
         title :{
             type: String,

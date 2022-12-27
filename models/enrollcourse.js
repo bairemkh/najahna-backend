@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { lessonSchema } from "./lesson.js";
 const { Schema, model} = mongoose;
 
 const enrollcourseSchema = new Schema (
@@ -17,7 +18,12 @@ const enrollcourseSchema = new Schema (
             type: Number,
             required: false,
             default: 0
-        }
+        },
+        lessonsterminated:[{
+            type: Schema.Types.ObjectId,
+            ref: 'Lesson',
+            required: false
+        }]
     }
 );
 export default model('Enrollcourse',enrollcourseSchema);
