@@ -1,4 +1,6 @@
 import mongoose, { SchemaType } from "mongoose";
+import { reviewSchema } from "./review.js";
+
 const { Schema, model} = mongoose;
 
 const courseSchema =  new Schema(
@@ -62,7 +64,13 @@ const courseSchema =  new Schema(
         comments:[{
             type: Schema.Types.ObjectId,
             ref: "Comment"
-        }]
+        }],
+        reviews: [reviewSchema],
+        rating:{
+            type: Number, 
+            required: true,
+            default: 0 
+        },
 
     },
     {

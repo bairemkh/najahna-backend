@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
+import { reviewSchema } from "./review.js";
+//import Review from "./review.js"
 const { Schema, model} = mongoose;
-
 const userSchema =  new Schema(
     {
         firstname :{
@@ -52,7 +53,13 @@ const userSchema =  new Schema(
             type:Schema.Types.ObjectId,
             ref: 'Course',
             required: false,
-        }]
+        }],
+        reviews: [reviewSchema],
+        rating:{
+            type: Number, 
+            required: true,
+            default:0 
+        },
 
     },
     {

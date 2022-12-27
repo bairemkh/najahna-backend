@@ -150,10 +150,10 @@ export async function becomeTrainer(req,res) {
 
 export async function editProfile (req,res) {
     try {
-        //const password = req.body.password;
+        const password = req.body.password;
         const user =  await User.findByIdAndUpdate(req.user._id,req.body);
-       // const hash = await bcrypt.hash(password,10);
-        //user.password = hash;
+        const hash = await bcrypt.hash(password,10);
+        user.password = hash;
         await user.save();
         return res.status(200).json({message : "updated"});
     } catch(e){
