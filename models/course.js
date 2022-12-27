@@ -71,6 +71,11 @@ const courseSchema =  new Schema(
             required: true,
             default: 0 
         },
+        quiz:{
+            type: Schema.Types.ObjectId,
+            ref: 'Quiz',
+            required: false 
+        }
 
     },
     {

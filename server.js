@@ -77,7 +77,7 @@ io.on("connection", (socket) => {
     // an event was received from the client
     console.log(msg);
     socket.emit(msg.receiverid,{msg})
-    socket.broadcast.emit(msg.receiverid,createMessageSocket(msg))
+    socket.broadcast.emit(`${msg.receiverid}Msg`,createMessageSocket(msg))
   });
 
   socket.on("onMessageNotif", (notif) => {

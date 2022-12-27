@@ -16,7 +16,6 @@ const sectionSchema = new Schema(
             ref: 'Lesson',
             required: false
         }]
-
     },
     {
         timestamps: true

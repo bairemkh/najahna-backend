@@ -71,6 +71,7 @@ export async function getMycoursesEnrolled (req,res) {
      res.status(200).json({enrolled : enrollcourse});
 
        }catch(err){
+        console.log(err)
         res.status(500).json({Error:err});
        }
     
