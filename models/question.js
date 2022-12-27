@@ -7,6 +7,10 @@ const questionSchema = new Schema (
             type:Schema.Types.ObjectId,
             required: false,
         },
+        question:{
+            type:Schema.Types.String,
+            required: true,
+        },
         props:[{
             type:Schema.Types.String,
             required: false,
