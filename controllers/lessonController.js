@@ -24,8 +24,9 @@ export async function addlesson(req,res) {
         }
     )
         await lesson.save();
+        console.log(lesson);
 
-        return res.status(200).json({success : true, lesson : lesson});  
+        return res.status(200).json(lesson);  
     }
    /* Lesson.create({
         title: req.body.title,

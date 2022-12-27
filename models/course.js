@@ -62,7 +62,12 @@ const courseSchema =  new Schema(
         comments:[{
             type: Schema.Types.ObjectId,
             ref: "Comment"
-        }]
+        }],
+        quiz:{
+            type: Schema.Types.ObjectId,
+            ref: 'Quiz',
+            required: false 
+        }
 
     },
     {

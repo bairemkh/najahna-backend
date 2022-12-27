@@ -1,5 +1,6 @@
 import express from "express";
 import multer from '../middleware/multer-config.js';
+import{addquiz,addquestion} from '../controllers/quizController.js'
 import { archivedMyCourse, createCourse, enrollInCourse, getAllCourses, getCourseById, getCoursesByFields, getMyCourseslist, getMyOwnerCourses, getMyOwnerCoursesArchived, initPayement, searchCourse, updateMyCourses } from "../controllers/courseController.js";
 import { protect, trainer } from "../middleware/autorization.js";
 
@@ -12,6 +13,14 @@ router
 router
 .route("/course/:id")
 .get(getCourseById)
+
+router
+.route("/addQuiz/:id")
+.post(addquiz)
+
+router
+.route("/addQuestionToQuiz/:id")
+.post(addquestion)
 
 router
 .route("/getall")

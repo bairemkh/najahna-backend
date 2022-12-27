@@ -39,6 +39,12 @@ export function getAllCourses (req,res) {
            //select: { body: 1 }
         }
      })
+     .populate({
+        path: "quiz",
+        populate: {
+            path: "questions"
+         }
+     })
     .then((courses) => {
         res.status(200).json({courses : courses});
     })

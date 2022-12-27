@@ -48,7 +48,7 @@ export async function enrollInCourse (req,res) {
 export async function getMycoursesEnrolled (req,res) {
        try{
 
-        const enrollcourse = await Enrollcourse.find({userid: req.user._id,progress}).populate({
+        const enrollcourse = await Enrollcourse.find({userid: req.user._id}).populate({
             path: "courseid",
              populate: [{
                 path: "idowner",
@@ -66,6 +66,7 @@ export async function getMycoursesEnrolled (req,res) {
      res.status(200).json({enrolled : enrollcourse});
 
        }catch(err){
+        console.log(err)
         res.status(500).json({Error:err});
        }
     
