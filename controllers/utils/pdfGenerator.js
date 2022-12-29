@@ -2,9 +2,48 @@
 //const axios = require('axio');
 //const FormData = require('form-data');
 //const Mustache = require('mustache');
+import pdf from 'pdf-creator-node'
 import fs from 'fs' 
+import { certifsend } from './mailer.js';
 
-const data = {
+export function pdfconvertFunction(req,user,course) {
+	var html = fs.readFileSync("views/certif.html","utf-8");
+
+var options = {
+	format: "A4",
+	orientation: "landscape",
+	border: "10mm",
+};
+var name = user.firstname + " " +user.lastname;
+var coursename = course.title;
+var delivered = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '') ;
+var filename = "CERTIF_" + Date.now()+".pdf"
+var document = {
+	html: html,
+	data:{
+		name: name,
+		coursename: coursename,
+		delivered: delivered,
+	},
+	path: "./public/files/"+filename,
+	type: "",
+  };
+
+
+  pdf
+  .create(document, options)
+  .then((res) => {
+    console.log(res);
+	certifsend(req,user,course,filename)
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+
+}
+
+
+/*const data = {
   invoiceNumber: "#12345"
 }
 
@@ -26,4 +65,4 @@ body.append('generation', JSON.stringify(generation));
 		responseType: 'stream',
 	});
 	await response.data.pipe(fs.createWriteStream('invoice.pdf'));
-})();
+})();*/

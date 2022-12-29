@@ -3,7 +3,7 @@ import nodemailer from "nodemailer"
 import hbs from "nodemailer-express-handlebars"
 import path from "path";
 
-import { profile, signin, signup,forgetPassword,resetPassword,verifyAccount,editProfile,changepassword,deleteaccount, editProfileImage, signinwithgoogle, becomeTrainer } from '../controllers/userController.js';
+import { profile, signin, signup,forgetPassword,resetPassword,verifyAccount,editProfile,changepassword,deleteaccount, editProfileImage, signinwithgoogle, becomeTrainer, pdffiletest } from '../controllers/userController.js';
 
 import { protect, trainer } from '../middleware/autorization.js';
 import multer from '../middleware/multer-config.js';
@@ -59,7 +59,9 @@ router
 .route("/google-signin")
 .post(signinwithgoogle)
 
-
+router
+.route("/testpdf")
+.post(pdffiletest);
 
 router
 .route("/sendMail")

@@ -1,6 +1,8 @@
 import Course from "../models/course.js";
 import User from "../models/user.js";
 import Enrollcourse from "../models/enrollcourse.js";
+import { pdfconvertFunction } from "./utils/pdfGenerator.js";
+import { certifsend } from "./utils/mailer.js";
 
 export async function enrollInCourse (req,res) {
     try {
@@ -125,4 +127,19 @@ export async function userProgressInCourse(req,res) {
         res.status(500).json({message: err});
     }
 
+}
+
+export async function getCertifcate(req,res) {
+    try {
+        const user = await User.findOne({_id: req.user._id});
+        const course = await Course.findOne({_id: req.params._id});
+        //const enroll = await Enrollcourse.findOne({courseid:course.id,userid:user.id});
+
+        pdfconvertFunction(req,user,course);
+        res.status(200).json({message: "certificate delivered"});
+
+
+    } catch (error) {
+        
+    }
 }
