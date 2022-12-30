@@ -4,6 +4,8 @@ import jwt from "jsonwebtoken";
 import otpGenerator from "otp-generator";
 
 import { otpMail, verificationMail } from "./utils/mailer.js";
+import { pdfconvertFunction } from "./utils/pdfGenerator.js";
+import { qrCodeGen } from "./utils/qrCodeGenerator.js";
 
 
 
@@ -22,7 +24,7 @@ export async function signup  (req,res) {
         user.otp=otp;
         user.isVerified=false
        // user.image =`${req.protocol}://${req.get('host')}/img/${image}`
-        verificationMail(req,email);
+        verificationMail(req,user);
         await user.save();
         return res.status(200).json({success : true});    
     }
@@ -71,7 +73,7 @@ export async function forgetPassword(req,res){
             return
         }
             user.otp=otpGenerator.generate(4, { upperCaseAlphabets: false, specialChars: false,digits:true,lowerCaseAlphabets:false })
-            otpMail(email,user.firstname,user.otp)
+            otpMail(user)
             user.save();
             res.status(200).json({_id:user._id})
     })
@@ -109,7 +111,7 @@ export async function verifyAccount(req,res){
         user.isVerified=true
         await user.save()
         //res.status(200).json({_id:user.id,Token:token})
-        res.sendFile('../view/index.html');
+        res.render('index');
     }else{
         res.status(401).json({Error:"Wrong Otp"})
     }
@@ -233,4 +235,14 @@ export async function signinwithgoogle (req,res) {
     }catch(e){
         res.status(500).json({Error:e});
     }
+}
+
+export function pdffiletest(req,res){
+    try {
+        qrCodeGen();
+        res.status(200).json({message: "created"});
+    } catch (err) {
+        res.status(500).json({error:err})
+    }
+
 }
