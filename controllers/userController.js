@@ -5,6 +5,7 @@ import otpGenerator from "otp-generator";
 
 import { otpMail, verificationMail } from "./utils/mailer.js";
 import { pdfconvertFunction } from "./utils/pdfGenerator.js";
+import { qrCodeGen } from "./utils/qrCodeGenerator.js";
 
 
 
@@ -238,7 +239,7 @@ export async function signinwithgoogle (req,res) {
 
 export function pdffiletest(req,res){
     try {
-        pdfconvertFunction()
+        qrCodeGen();
         res.status(200).json({message: "created"});
     } catch (err) {
         res.status(500).json({error:err})

@@ -5,6 +5,7 @@
 import pdf from 'pdf-creator-node'
 import fs from 'fs' 
 import { certifsend } from './mailer.js';
+import { qrCodeGen } from './qrCodeGenerator.js';
 
 export function pdfconvertFunction(req,user,course) {
 	var html = fs.readFileSync("views/certif.html","utf-8");
@@ -18,22 +19,26 @@ var name = user.firstname + " " +user.lastname;
 var coursename = course.title;
 var delivered = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '') ;
 var filename = "CERTIF_" + Date.now()+".pdf"
+//var fileqr = "http://192.168.1.15:9090/img/QRCODE_CERTIF_" + Date.now() + ".png"
+var fileqr = "http://192.168.1.15:9090/img/QRCODE_CERTIF_" + Date.now() + ".png"
 var document = {
 	html: html,
 	data:{
 		name: name,
 		coursename: coursename,
 		delivered: delivered,
+		fileqr: fileqr
 	},
 	path: "./public/files/"+filename,
 	type: "",
   };
 
-
+  qrCodeGen(filename)
   pdf
   .create(document, options)
   .then((res) => {
     console.log(res);
+	
 	certifsend(req,user,course,filename)
   })
   .catch((error) => {
