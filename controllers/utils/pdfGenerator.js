@@ -20,7 +20,7 @@ var coursename = course.title;
 var delivered = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '') ;
 var filename = "CERTIF_" + Date.now()+".pdf"
 //var fileqr = "http://192.168.1.15:9090/img/QRCODE_CERTIF_" + Date.now() + ".png"
-var fileqr = "http://192.168.1.15:9090/img/QRCODE_CERTIF_" + Date.now() + ".png"
+var fileqr ="http://" + req.get('host') +"/img/QRCODE_CERTIF_" + Date.now() + ".png"
 var document = {
 	html: html,
 	data:{
@@ -33,7 +33,7 @@ var document = {
 	type: "",
   };
 
-  qrCodeGen(filename)
+  qrCodeGen(req,filename)
   pdf
   .create(document, options)
   .then((res) => {
