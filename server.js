@@ -52,6 +52,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/img",express.static('public/images'));
 app.use("/vid",express.static('public/videos'));
 app.use("/file",express.static('public/files'));
+app.set('view engine', 'ejs')
 
 app.use('/user',userRoutes);
 app.use('/course',courseRoutes)
@@ -62,7 +63,8 @@ app.use('/message',messageRoutes)
 app.use('/enroll',enrollRoutes)
 app.use('/review',reviewRoutes)
 app.get('/', function(req,res) {
-  res.send("welcome to najahni")
+ // res.send("welcome to najahni")
+  res.render('index.ejs')
 });
 
 const httpServer = createServer(app);

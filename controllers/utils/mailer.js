@@ -119,7 +119,7 @@ export async function certifsend(req,user,course,filename){
       template: 'certif',
       context: {
         host: req.get('host'),
-          user: user,
+          username: user.firstname,
           course: course.title
           //email: email,
       } ,

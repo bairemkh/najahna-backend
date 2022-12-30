@@ -111,7 +111,7 @@ export async function verifyAccount(req,res){
         user.isVerified=true
         await user.save()
         //res.status(200).json({_id:user.id,Token:token})
-        res.sendFile('../view/index.html');
+        res.render('index');
     }else{
         res.status(401).json({Error:"Wrong Otp"})
     }
