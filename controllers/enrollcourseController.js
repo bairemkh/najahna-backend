@@ -64,8 +64,14 @@ export async function getMycoursesEnrolled (req,res) {
                 {path: "sections",
                 populate: {
                     path: "lessons",  
-                 },  
-        }]
+                 }},
+                 {
+                    path: "quiz",
+                    populate: {
+                        path: "questions"
+                     }
+                 }
+            ]
 
    
          })

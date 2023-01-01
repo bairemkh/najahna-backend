@@ -171,6 +171,21 @@ export async function enrollInCourse (req,res) {
                 }else{
                     return res.status(403).json({message : "already exisit !!"})
                 }
+                
+               /* user.courses.forEach(async element => {
+                         if(element != course.id){
+                             //console.log(element != course._id);
+                            
+                         
+                        await user.save()
+                        return res.status(200).json({message : "you are enrolled"})
+                         } else {
+                            return res.status(403).json({message : "already exisit !!"})
+                         }
+                 
+                     
+                 });*/
+
             }
 
     } catch(e){
@@ -189,6 +204,8 @@ export async function getMyCourseslist(req,res) {
             path:"sections"
          }    
      })
+   // courses.populate("course")
+  // const user = await courses.populate("courses");
    const mycourses = user.courses;
 
  res.status(200).json({courses : mycourses});
