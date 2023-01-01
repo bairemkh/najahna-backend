@@ -204,6 +204,36 @@
         ]
       }
     },
+    "/user/forget-password": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Forget password",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
     "/course/getall": {
       "get": {
         "tags": [

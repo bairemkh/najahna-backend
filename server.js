@@ -91,7 +91,6 @@ io.on("connection", (socket) => {
   socket.on("notification", (notif) => {
     // an event was received from the client
     console.log(notif);
-    socket.emit("receive",notif)
     socket.broadcast.emit("receive",createNotificationSocket(notif))
   });
   // upon disconnection
