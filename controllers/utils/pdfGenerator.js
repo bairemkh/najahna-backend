@@ -7,13 +7,14 @@ import fs from 'fs'
 import { certifsend } from './mailer.js';
 import { qrCodeGen } from './qrCodeGenerator.js';
 
-export function pdfconvertFunction(req,user,course) {
+export async function pdfconvertFunction(req,user,course) {
 	var html = fs.readFileSync("views/certif.html","utf-8");
 
 var options = {
 	format: "A4",
 	orientation: "landscape",
 	border: "10mm",
+	timeout: 540000
 };
 var name = user.firstname + " " +user.lastname;
 var coursename = course.title;
@@ -30,6 +31,7 @@ var document = {
 		fileqr: fileqr
 	},
 	path: "./public/files/"+filename,
+	//path: "./output.pdf",
 	type: "",
   };
 
