@@ -146,6 +146,6 @@ export async function getCertifcate(req,res) {
 
 
     } catch (error) {
-        
+        res.status(500).json({err: error})
     }
 }
