@@ -61,6 +61,13 @@ export async function getMycoursesEnrolled (req,res) {
                 path: "idowner",
                
              },
+             {
+                path: "comments",
+                populate: {
+                   path: "userId"
+                   //select: { body: 1 }
+                }
+             },
                 {path: "sections",
                 populate: {
                     path: "lessons",  
@@ -94,6 +101,13 @@ export async function getMycoursesCompleted (req,res) {
              path: "idowner",
             
           },
+          {
+            path: "comments",
+            populate: {
+               path: "userId"
+               //select: { body: 1 }
+            }
+         },
              {path: "sections",
              populate: {
                  path: "lessons",  
@@ -106,7 +120,7 @@ export async function getMycoursesCompleted (req,res) {
   res.status(200).json({enrolled : enrollcourse});
 
     }catch(err){
-     res.status(500).json({Error:e});
+     res.status(500).json({Error:err});
     }
  
 }
