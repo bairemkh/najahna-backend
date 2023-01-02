@@ -1,11 +1,22 @@
-<h1 align="center">This is Najahni Backend app</h1>
-<h2 align="center">Created by bairem khedhri and mohamed oueslati</h3>
-<br>
+
+<div align="center">
+  <a href="https://github.com/github_username/repo_name">
+    <img src="https://res.cloudinary.com/dns52wnzn/image/upload/v1672413659/image-1_rkfgvr.png?fbclid=IwAR1mErlsMIVU6Tw0W49net-E_YijYgppbwhsKszQYp9QiaAWpivjeGrT1ss" alt="Logo" width="80">
+  </a>
+
+<h3 align="center">Najahni</h3>
+
+  <p align="center">
+    Backend Repository
+  </p>
+</div>
 
 ## Table of contents
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Setup](#setup)
+* [Credits](#credits)
+* [Contact](#contact)
 
 ## General info
 
@@ -58,7 +69,24 @@ The application will recommend courses based on its ranking and the number of st
 <br> <br>
 
 ## Setup
-To run this project, Type the code below to install it:<br>
+
+First You have to clone it
+```
+$ git clone https://github.com/bairemkh/najahna-backend.git
+```
+Then, to run this project, Type the code below to install it:
 ```
 $docker compose up
 ```
+
+## Credits
+<h3 align="left">This project realized by :</h3>
+<ul>
+  <li><a href="https://www.linkedin.com/in/bairem-khedhri">Bairem Khedhri</a></li>
+  <li><a href="https://www.linkedin.com/in/mohamed-oueslati-aa1a531b4/">Mohamed OUESLATI</a></li>
+</ul>
+<h3 align="left">and also supervised by Mr. Khaled Guedria</h3>
+
+## Contact
+
+Bairem Khedhri - [@bairemkh](https://www.linkedin.com/in/bairem-khedhri) - email@email_client.com
