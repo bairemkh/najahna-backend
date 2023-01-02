@@ -90,7 +90,9 @@ export function searchCourse(req,res) {
 }
 
 export function getMyOwnerCourses (req,res) {
-    Course.find({idowner: req.user._id,isArchived: false}).populate("idowner").populate({
+    Course.find({idowner: req.user._id,isArchived: false})
+    .populate("idowner")
+    .populate({
         path: "sections",
         populate: {
            path: "lessons"
@@ -103,6 +105,12 @@ export function getMyOwnerCourses (req,res) {
            path: "userId"
            //select: { body: 1 }
         }
+     })
+     .populate({
+        path: "quiz",
+        populate: {
+            path: "questions"
+         }
      })
     .then((courses) => {
         res.status(200).json({courses : courses});
