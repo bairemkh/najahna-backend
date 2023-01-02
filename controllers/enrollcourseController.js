@@ -61,13 +61,11 @@ export async function getMycoursesEnrolled (req,res) {
                 path: "idowner",
                
              },
-             {
-                path: "comments",
+             {path: "comments",
                 populate: {
                    path: "userId"
                    //select: { body: 1 }
-                }
-             },
+                }},
                 {path: "sections",
                 populate: {
                     path: "lessons",  
@@ -112,6 +110,11 @@ export async function getMycoursesCompleted (req,res) {
              populate: {
                  path: "lessons",  
               },  
+              path: "comments",
+                populate: {
+                   path: "userId"
+                   //select: { body: 1 }
+                }
      }]
 
 
@@ -155,7 +158,7 @@ export async function getCertifcate(req,res) {
         const course = await Course.findOne({_id: req.params._id});
         //const enroll = await Enrollcourse.findOne({courseid:course.id,userid:user.id});
 
-        pdfconvertFunction(req,user,course);
+       await pdfconvertFunction(req,user,course);
         res.status(200).json({message: "certificate delivered"});
 
 
