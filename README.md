@@ -74,7 +74,8 @@ First You have to clone it
 ```
 $ git clone https://github.com/bairemkh/najahna-backend.git
 ```
-Then, to run this project, Type the code below to install it first:
+Then, to run this project, Type the code below to install it first:<br>
+You can use docker:
 ```
 $docker compose up
 ```
