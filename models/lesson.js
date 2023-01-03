@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const { Schema, model} = mongoose;
 
-const lessonSchema = new Schema (
+export const lessonSchema = new Schema (
     {
         title :{
             type: String,
@@ -9,7 +9,15 @@ const lessonSchema = new Schema (
         },
         video :{
             type: String,
-            required: true
+            required: false
+        },
+        duration:{
+            type: Number,
+            require: false
+        },
+        sectionid:{
+            type: Schema.Types.ObjectId,
+            required: false
         }
     }
 );

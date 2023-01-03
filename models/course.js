@@ -1,4 +1,6 @@
-import mongoose from "mongoose";
+import mongoose, { SchemaType } from "mongoose";
+import { reviewSchema } from "./review.js";
+
 const { Schema, model} = mongoose;
 
 const courseSchema =  new Schema(
@@ -52,7 +54,28 @@ const courseSchema =  new Schema(
             type:Schema.Types.ObjectId,
             ref: 'Section',
             required: false
-        }]
+        }],
+        students: [{
+            type:Schema.Types.ObjectId,
+            ref: 'Course',
+            required: false,
+            default: []
+        }],
+        comments:[{
+            type: Schema.Types.ObjectId,
+            ref: "Comment"
+        }],
+        reviews: [reviewSchema],
+        rating:{
+            type: Number, 
+            required: true,
+            default: 0 
+        },
+        quiz:{
+            type: Schema.Types.ObjectId,
+            ref: 'Quiz',
+            required: false 
+        }
 
     },
     {

@@ -4,6 +4,8 @@ import jwt from "jsonwebtoken";
 import otpGenerator from "otp-generator";
 
 import { otpMail, verificationMail } from "./utils/mailer.js";
+import { pdfconvertFunction } from "./utils/pdfGenerator.js";
+import { qrCodeGen } from "./utils/qrCodeGenerator.js";
 
 
 
@@ -21,8 +23,8 @@ export async function signup  (req,res) {
         const otp=otpGenerator.generate(4, { upperCaseAlphabets: false, specialChars: false,digits:true,lowerCaseAlphabets:false })
         user.otp=otp;
         user.isVerified=false
-       // user.image =`${req.protocol}://${req.get('host')}/img/${image}`
-        verificationMail(req,email);
+        user.image ="/img/unknown.png"
+        verificationMail(req,user);
         await user.save();
         return res.status(200).json({success : true});    
     }
@@ -71,7 +73,7 @@ export async function forgetPassword(req,res){
             return
         }
             user.otp=otpGenerator.generate(4, { upperCaseAlphabets: false, specialChars: false,digits:true,lowerCaseAlphabets:false })
-            otpMail(email,user.firstname,user.otp)
+            otpMail(user)
             user.save();
             res.status(200).json({_id:user._id})
     })
@@ -109,7 +111,7 @@ export async function verifyAccount(req,res){
         user.isVerified=true
         await user.save()
         //res.status(200).json({_id:user.id,Token:token})
-        res.sendFile('../view/index.html');
+        res.render('index');
     }else{
         res.status(401).json({Error:"Wrong Otp"})
     }
@@ -123,7 +125,7 @@ export async function editProfileImage(req,res) {
     try{
         const user = await User.findById(req.user._id)
         const image =  await req.file.filename;
-        user.image = `${req.protocol}://${req.get('host')}/img/${image}`;
+        user.image = `/img/${image}`;
         user.save();
         res.status(200).json({message : "image changed"});
 
@@ -133,13 +135,28 @@ export async function editProfileImage(req,res) {
 
 }
 
+export async function becomeTrainer(req,res) {
+    try{
+        const user = await User.findById(req.user._id)
+        const file =  await req.file.filename;
+        user.file = `/file/${file}`;
+        user.role = "Trainer"
+        user.save();
+        res.status(200).json({message : "Badge uploaded"});
+
+    }catch(e){
+        res.status(500).json({Error:"Server error"});
+    }
+
+}
+
 export async function editProfile (req,res) {
     try {
-        //const password = req.body.password;
+        const password = req.body.password;
         const user =  await User.findByIdAndUpdate(req.user._id,req.body);
-       // const hash = await bcrypt.hash(password,10);
-        //user.password = hash;
-       // await user.save();
+        const hash = await bcrypt.hash(password,10);
+        user.password = hash;
+        await user.save();
         return res.status(200).json({message : "updated"});
     } catch(e){
         res.status(500).json({Error:"Server error"});
@@ -202,18 +219,30 @@ export async function signinwithgoogle (req,res) {
             const token = jwt.sign(payload,process.env.JWT_SECRET, {
                 expiresIn: 60 * 60 * 24,
             });
-            res.status(200).json({token: token});
+            res.status(200).json({token: token,role: userfound.role});
+        } else {
+
+            const user = await User.create(req.body);
+            const payload = {id:user.id};
+            const token = jwt.sign(payload,process.env.JWT_SECRET, {
+                expiresIn: 60 * 60 * 24,
+            });
+            await user.save();
+            res.status(200).json({message: "connected with google account",token: token,role: user.role})
         }
 
-        const user = await User.create(req.body);
-        const payload = {id:user.id};
-        const token = jwt.sign(payload,process.env.JWT_SECRET, {
-            expiresIn: 60 * 60 * 24,
-        });
-        await user.save();
-        res.status(200).json({message: "connected with google account",token: token})
 
     }catch(e){
-        res.status(500).json({Error:"Server error"});
+        res.status(500).json({Error:e});
     }
+}
+
+export function pdffiletest(req,res){
+    try {
+        qrCodeGen();
+        res.status(200).json({message: "created"});
+    } catch (err) {
+        res.status(500).json({error:err})
+    }
+
 }
