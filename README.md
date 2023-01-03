@@ -98,4 +98,4 @@ $npm run dev
 
 ## Contact
 
-Bairem Khedhri - [@bairemkh](https://www.linkedin.com/in/bairem-khedhri) - email@email_client.com
+Najahni - najahni.contact@gmail.com
