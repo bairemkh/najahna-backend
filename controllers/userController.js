@@ -23,7 +23,7 @@ export async function signup  (req,res) {
         const otp=otpGenerator.generate(4, { upperCaseAlphabets: false, specialChars: false,digits:true,lowerCaseAlphabets:false })
         user.otp=otp;
         user.isVerified=false
-       // user.image =`${req.protocol}://${req.get('host')}/img/${image}`
+        user.image ="/img/unknown.png"
         verificationMail(req,user);
         await user.save();
         return res.status(200).json({success : true});    
