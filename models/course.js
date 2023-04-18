@@ -1,6 +1,6 @@
 import mongoose, { SchemaType } from "mongoose";
 import { reviewSchema } from "./review.js";
-
+import { quizSchema } from "./quiz.js";
 const { Schema, model} = mongoose;
 
 const courseSchema =  new Schema(
@@ -72,8 +72,7 @@ const courseSchema =  new Schema(
             default: 0 
         },
         quiz:{
-            type: Schema.Types.ObjectId,
-            ref: 'Quiz',
+            type: [quizSchema],
             required: false 
         }
 

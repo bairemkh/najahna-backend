@@ -1,6 +1,5 @@
 import Course from "../models/course.js";
 import Quiz from "../models/quiz.js";
-import Question from "../models/question.js";
 
 export async function addquiz(req,res) {
 
@@ -9,24 +8,15 @@ export async function addquiz(req,res) {
     if(!coursefound) {
         return res.status(404).json({error: "Course not found !"});
     }
-    if(coursefound.quiz!==undefined){
+    if(coursefound.quiz.length==0){
         return res.status(403).json({error: "Already have a quiz !"});
     }
     else {
-        const quiz = await Quiz.create({
-            courseid:courseid
-        });
-        await Course.findByIdAndUpdate({
-            _id: courseid
-        },
-        {
-            quiz:quiz._id
-        }
-    )
-        await quiz.save();
-        console.log(quiz);
+        coursefound.quiz=req.body
+        await coursefound.save();
+        console.log(coursefound);
 
-        return res.status(200).json(quiz);  
+        return res.status(200).json(coursefound);  
     }
 }
 
@@ -50,7 +40,6 @@ export async function addquestion(req,res) {
         }
     )
         await question.save();
-        console.log(question);
 
         return res.status(200).json(question);  
     }

@@ -1,17 +1,20 @@
 import mongoose from "mongoose";
 const { Schema, model} = mongoose;
 
-const quizSchema = new Schema (
+export const quizSchema= new Schema (
     {
-        courseid:{
-            type: Schema.Types.ObjectId,
-            required: true
+        question:{
+            type:Schema.Types.String,
+            required: true,
         },
-        questions:[{
-            type:Schema.Types.ObjectId,
-            ref: 'Question',
+        props:[{
+            type:Schema.Types.String,
             required: false,
-        }]
+        }],
+        correctIndex:{
+            type:Schema.Types.Number,
+            required: false,
+        }
         
     }
 );
