@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { lessonSchema } from "./lesson.js";
 const { Schema, model} = mongoose;
 
 const sectionSchema = new Schema(
@@ -12,8 +13,7 @@ const sectionSchema = new Schema(
             required: false
         },
         lessons: [{
-            type:Schema.Types.ObjectId,
-            ref: 'Lesson',
+            type:lessonSchema,
             required: false
         }]
     },

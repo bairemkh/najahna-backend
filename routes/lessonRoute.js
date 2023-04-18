@@ -8,7 +8,7 @@ router
 .post(upload.single("video"),addlesson)
 
 router
-.route("/edit-lesson/:id")
+.route("/update/:lessonId/section/:sectionId")
 .put(upload.single("video"),updateLesson)
 
 router

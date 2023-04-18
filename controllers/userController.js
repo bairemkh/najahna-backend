@@ -23,7 +23,7 @@ export async function signup  (req,res) {
         const otp=otpGenerator.generate(4, { upperCaseAlphabets: false, specialChars: false,digits:true,lowerCaseAlphabets:false })
         user.otp=otp;
         user.isVerified=false
-       // user.image =`${req.protocol}://${req.get('host')}/img/${image}`
+        user.image ="/img/unknown.png"
         verificationMail(req,user);
         await user.save();
         return res.status(200).json({success : true});    
@@ -124,6 +124,7 @@ export async function verifyAccount(req,res){
 export async function editProfileImage(req,res) {
     try{
         const user = await User.findById(req.user._id)
+        console.log(user);
         const image =  await req.file.filename;
         user.image = `/img/${image}`;
         user.save();
@@ -153,11 +154,25 @@ export async function becomeTrainer(req,res) {
 export async function editProfile (req,res) {
     try {
         const password = req.body.password;
-        const user =  await User.findByIdAndUpdate(req.user._id,req.body);
-        const hash = await bcrypt.hash(password,10);
-        user.password = hash;
-        await user.save();
-        return res.status(200).json({message : "updated"});
+        const email=req.body.email;
+        if(password){
+            const user =  await User.findByIdAndUpdate(req.user._id,req.body);
+            const hash = await bcrypt.hash(password,10);
+            user.password = hash;
+            await user.save();
+            return res.status(200).json({message : "updated"});
+        }else if(email!==req.user.email){
+            const user =  await User.findByIdAndUpdate(req.user._id,req.body);
+            user.isVerified = false
+            verificationMail(req,user)
+            await user.save();
+            return res.status(200).json({message : "updated"});
+        }else{
+            const user =  await User.findByIdAndUpdate(req.user._id,req.body);
+            await user.save();
+            return res.status(200).json({message : "User updated"});
+        }
+
     } catch(e){
         res.status(500).json({Error:"Server error"});
     }

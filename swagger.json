@@ -67,6 +67,7 @@
           },
           "image": {
             "type": "string",
+            "format": "binary",
             "required": "false"
           },
           "price": {
@@ -91,6 +92,27 @@
               "type": "string"
             },
             "enum": "-Beginner - Amateur - Advanced"
+          }
+        }
+      },"Quiz": {
+        "properties": {
+          "quizid": {
+            "type": "string",
+            "required": "true"
+          },
+          "question": {
+            "type": "string",
+            "required": "true"
+          },
+          "correctIndex": {
+            "type": "number",
+            "required": "true"
+          },
+          "props": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -308,6 +330,12 @@
     },
     "/course/add-course": {
       "post": {
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "tags": [
           "Courses"
         ],
@@ -319,11 +347,58 @@
         },
         "parameters": [
           {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "$ref": "#/components/schemas/Course"
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token (Bearer *Token*)",
+            "type": "string"
+          },
+          {
+            "name": "image",
+            "in": "formData",
+            "type": "file",
+            "required": false
+          },
+          {
+            "name": "title",
+            "in": "formData",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "description",
+            "in": "formData",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "price",
+            "in": "formData",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "isPaid",
+            "in": "formData",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "level",
+            "in": "formData",
+            "type": "string",
+            "required": false,
+            "enum":["Beginner","Amateur","Advanced"]
+          },
+          {
+            "name": "fields",
+            "in": "formData",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "string",            
+            "enum":["Science","Programming","Computing","Mechanics","Business","Softskills","Language","Arts","Multimedia"]
             }
+            
           }
         ]
       }
@@ -425,14 +500,6 @@
             "description": "Course id",
             "required": true,
             "type": "string"
-          },
-          {
-            "in": "body",
-            "description": "Course new form",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/Course"
-            }
           }
         ]
       }
@@ -465,8 +532,7 @@
           },
           {
             "in": "body",
-            "description": "new section",
-            "required": true,
+            "name": "body",
             "schema": {
               "type": "object",
               "properties": {
@@ -521,6 +587,7 @@
             "type": "string"
           },{
             "in": "body",
+            "name": "body",
             "description": "New lesson",
             "required": true,
             "schema": {
@@ -577,6 +644,7 @@
             "type": "string"
           },{
             "in": "body",
+            "name": "body",
             "description": "New Review",
             "required": true,
             "schema": {
@@ -609,6 +677,14 @@
             "description": "Course id",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "Quiz",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Quiz"
+            }
           }
         ]
       }
@@ -633,6 +709,7 @@
             "type": "string"
           },{
             "in": "body",
+            "name": "body",
             "description": "New Review",
             "required": true,
             "schema": {
@@ -652,6 +729,46 @@
             "type":"number",
             "required": false
         }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/comment/add-comment/{id}": {
+      "post": {
+        "tags": [
+          "Courses"
+        ],
+        "summary": "create a comment",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token (Bearer *Token*)",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Course id",
+            "required": true,
+            "type": "string"
+          },{
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "content": {
+                  "type": "string"
+                }
               }
             }
           }
