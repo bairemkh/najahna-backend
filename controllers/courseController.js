@@ -2,11 +2,13 @@ import Course from "../models/course.js";
 import User from "../models/user.js";
 import fetch from "node-fetch";
 import { json } from "express";
+import course from "../models/course.js";
 export function createCourse (req, res) {
+    console.log(req.body);
     Course.create({
         title: req.body.title,
         description: req.body.description,
-        fields: req.body.fields,
+        //fields: req.body.fields,
         level: req.body.level,
         isPaid: req.body.isPaid,
         image: `/img/${req.file.filename}`,
@@ -15,7 +17,14 @@ export function createCourse (req, res) {
     })
     .then(newCourse => {
         console.log(newCourse);
-        res.status(200).json(newCourse);
+        Course.findById(newCourse.id).populate("idowner").then(
+            course =>{
+                console.log(course);
+                res.status(200).json(course);
+            }
+           
+        )
+
     })
     .catch((err) => {
         res.status(500).json({error: err})
@@ -130,9 +139,13 @@ export function getMyOwnerCoursesArchived (req,res) {
     })
 }
 
-export function updateMyCourses (req,res) {
-    Course.findOneAndUpdate({_id : req.params._id,idowner:req.user._id},req.body)
-    .then((c) => {
+export function updateMyCourses (req,res) {    
+    console.log(req.body);
+    Course.findOneAndUpdate({_id : req.params.id,idowner:req.user._id},req.body)
+    .then(async (c) => {
+        c.lesson_number= c.sections.map(section => section.lessons.length)
+        .reduce((acc, curr) => acc + curr, 0);
+        await c.save();
         res.status(200).json({ message: "course is updated !"});
     })
     .catch((err) => {

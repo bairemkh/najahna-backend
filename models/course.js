@@ -1,6 +1,7 @@
 import mongoose, { SchemaType } from "mongoose";
 import { reviewSchema } from "./review.js";
 import { quizSchema } from "./quiz.js";
+import { sectionSchema } from "./section.js";
 const { Schema, model} = mongoose;
 
 const courseSchema =  new Schema(
@@ -51,8 +52,7 @@ const courseSchema =  new Schema(
             default:0
         },
         sections: [{
-            type:Schema.Types.ObjectId,
-            ref: 'Section',
+            type:sectionSchema,
             required: false
         }],
         students: [{
