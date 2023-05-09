@@ -7,11 +7,11 @@ export const quizSchema= new Schema (
             type:Schema.Types.String,
             required: true,
         },
-        props:[{
+        propositions:[{
             type:Schema.Types.String,
             required: false,
         }],
-        correctIndex:{
+        answerIndex:{
             type:Schema.Types.Number,
             required: false,
         }

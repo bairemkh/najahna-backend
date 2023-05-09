@@ -43,7 +43,7 @@ router
 .get(protect,trainer,getMyOwnerCoursesArchived)
 
 router
-.route("/update-myCourse/:_id")
+.route("/update-myCourse/:id")
 .put(protect,trainer,multer,updateMyCourses)
 
 router

@@ -27,8 +27,15 @@ export async function addlesson(req,res) {
         coursefound.lesson_number = coursefound.lesson_number + 1;
         console.log(coursefound);
         await coursefound.save();
-        return res.status(200).json({success : true, lesson : lesson});  
+        return res.status(200).json(lesson);  
     }
+}
+export async function saveLessonVideo(req,res) {    
+        const lesson = req.body;
+        lesson.video = `/vid/${req.file.filename}`;
+        lesson.duration = await getVideoDurationInSeconds("http://localhost:9090"+lesson.video);
+        console.log(lesson.duration);        
+        return res.status(200).json(lesson);  
 }
 
 /*export function updateLesson (req,res) {
