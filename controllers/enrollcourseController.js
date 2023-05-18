@@ -144,7 +144,7 @@ export async function userProgressInCourse(req,res) {
        enroll.progress =  enroll.progress + (1/course.lesson_number);
        enroll.lessonsterminated.push(lessonid)
        enroll.save();
-       res.status(200).json({message: "Lesson terminated"});
+       res.status(201).json({message: "Lesson terminated"});
     }catch(err){
         res.status(500).json({message: err});
     }
