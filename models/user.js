@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import { reviewSchema } from "./review.js";
-//import Review from "./review.js"
 const { Schema, model} = mongoose;
 const userSchema =  new Schema(
     {
@@ -38,7 +37,7 @@ const userSchema =  new Schema(
           },
         fields:{
             type: [String],
-            enum: ['Science','Programming','Computing','Mechanics','Business','Soft skills','Language','Arts','Multimedia'],
+            enum: ['Science','Programming','Computing','Mechanics','Business','SoftSkills','Language','Arts','Multimedia'],
             required: false
         },
         wallet:{

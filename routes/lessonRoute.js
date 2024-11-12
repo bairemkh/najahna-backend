@@ -1,5 +1,5 @@
 import express from "express";
-import { addlesson, deleteLesson, updateLesson } from "../controllers/lessonController.js";
+import { addlesson, deleteLesson, updateLesson,saveLessonVideo } from "../controllers/lessonController.js";
 import upload from "../middleware/storage-video.js";
 const router = express.Router();
 
@@ -8,7 +8,11 @@ router
 .post(upload.single("video"),addlesson)
 
 router
-.route("/edit-lesson/:id")
+.route("/saveLessonVideo")
+.post(upload.single("video"),saveLessonVideo)
+
+router
+.route("/update/:lessonId/section/:sectionId")
 .put(upload.single("video"),updateLesson)
 
 router

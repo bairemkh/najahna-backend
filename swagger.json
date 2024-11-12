@@ -67,6 +67,7 @@
           },
           "image": {
             "type": "string",
+            "format": "binary",
             "required": "false"
           },
           "price": {
@@ -91,6 +92,27 @@
               "type": "string"
             },
             "enum": "-Beginner - Amateur - Advanced"
+          }
+        }
+      },"Quiz": {
+        "properties": {
+          "quizid": {
+            "type": "string",
+            "required": "true"
+          },
+          "question": {
+            "type": "string",
+            "required": "true"
+          },
+          "correctIndex": {
+            "type": "number",
+            "required": "true"
+          },
+          "props": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -308,6 +330,12 @@
     },
     "/course/add-course": {
       "post": {
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "tags": [
           "Courses"
         ],
@@ -325,11 +353,52 @@
             "type": "string"
           },
           {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "$ref": "#/components/schemas/Course"
+            "name": "image",
+            "in": "formData",
+            "type": "file",
+            "required": false
+          },
+          {
+            "name": "title",
+            "in": "formData",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "description",
+            "in": "formData",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "price",
+            "in": "formData",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "isPaid",
+            "in": "formData",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "level",
+            "in": "formData",
+            "type": "string",
+            "required": false,
+            "enum":["Beginner","Amateur","Advanced"]
+          },
+          {
+            "name": "fields",
+            "in": "formData",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "string",            
+            "enum":["Science","Programming","Computing","Mechanics","Business","Softskills","Language","Arts","Multimedia"]
             }
+            
           }
         ]
       }
@@ -608,6 +677,14 @@
             "description": "Course id",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "Quiz",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Quiz"
+            }
           }
         ]
       }

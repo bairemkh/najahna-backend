@@ -7,14 +7,14 @@ export async function addSection (req,res) {
     if(!coursefound) {
         return res.status(404).json({error: "Course not found !"});
     }else {
-        const section = await Section.create(req.body);
+        const section = req.body;
         section.courseid = courseid;
         await Course.findByIdAndUpdate({
             _id: courseid
         },
         {
             $push: {
-                sections: section._id,
+                sections: section,
             },
         }
     )

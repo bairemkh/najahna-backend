@@ -41,7 +41,7 @@ router
 
 router
 .route("/change-photo")
-.post(protect,multer,editProfileImage)
+.put(protect,multer,editProfileImage)
 
 router
 .route("/add-badge")

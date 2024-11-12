@@ -14,10 +14,6 @@ export const lessonSchema = new Schema (
         duration:{
             type: Number,
             require: false
-        },
-        sectionid:{
-            type: Schema.Types.ObjectId,
-            required: false
         }
     }
 );
