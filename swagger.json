@@ -1,0 +1,779 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Najahni backend documentation",
+    "description": "My User Project Application API"
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "properties": {
+          "firstname": {
+            "type": "string",
+            "required": "true"
+          },
+          "lastname": {
+            "type": "string",
+            "required": "true"
+          },
+          "email": {
+            "type": "string",
+            "required": "true"
+          },
+          "password": {
+            "type": "string",
+            "required": "true"
+          },
+          "isVerified": {
+            "type": "boolean",
+            "default": false
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "Student",
+              "Trainer"
+            ],
+            "default": "Student"
+          },
+          "otp": {
+            "type": "string",
+            "required": "false"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "enum": "-Science - Programming - Computing - Mechanics - Business  - Soft skills - Language - Arts - Multimedia",
+            "required": true
+          }
+        }
+      },
+      "Course": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "required": "true"
+          },
+          "description": {
+            "type": "string",
+            "required": "true"
+          },
+          "isPaid": {
+            "type": "boolean",
+            "required": "false"
+          },
+          "image": {
+            "type": "string",
+            "format": "binary",
+            "required": "false"
+          },
+          "price": {
+            "type": "number",
+            "required": false
+          },
+          "isArchived": {
+            "type": "Boolean",
+            "required": "false",
+            "default": "false"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "enum": "-Science - Programming - Computing - Mechanics - Business -Soft skills - Language - Arts - Multimedia"
+          },
+          "level": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "enum": "-Beginner - Amateur - Advanced"
+          }
+        }
+      },"Quiz": {
+        "properties": {
+          "quizid": {
+            "type": "string",
+            "required": "true"
+          },
+          "question": {
+            "type": "string",
+            "required": "true"
+          },
+          "correctIndex": {
+            "type": "number",
+            "required": "true"
+          },
+          "props": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Section": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "required": "true"
+          }
+        }
+      }
+    }
+  },
+  "host": "localhost:9090",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/user/signin": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "signin",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/user/signup": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "signup",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/components/schemas/User"
+            }
+          }
+        ]
+      }
+    },
+    "/user/reset-password": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "reset password",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "otp": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/user/editprofile": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Edit account",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token (Bearer *Token*)",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/components/schemas/User"
+            }
+          }
+        ]
+      }
+    },
+    "/user/delete-account": {
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Delete account",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token (Bearer *Token*)",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/user/verify-account": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "verify account",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/user/forget-password": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Forget password",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/course/add-course": {
+      "post": {
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Courses"
+        ],
+        "summary": "Add Course",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token (Bearer *Token*)",
+            "type": "string"
+          },
+          {
+            "name": "image",
+            "in": "formData",
+            "type": "file",
+            "required": false
+          },
+          {
+            "name": "title",
+            "in": "formData",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "description",
+            "in": "formData",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "price",
+            "in": "formData",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "isPaid",
+            "in": "formData",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "level",
+            "in": "formData",
+            "type": "string",
+            "required": false,
+            "enum":["Beginner","Amateur","Advanced"]
+          },
+          {
+            "name": "fields",
+            "in": "formData",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "string",            
+            "enum":["Science","Programming","Computing","Mechanics","Business","Softskills","Language","Arts","Multimedia"]
+            }
+            
+          }
+        ]
+      }
+    },
+    "/course/getall": {
+      "get": {
+        "tags": [
+          "Courses"
+        ],
+        "summary": "Get all of courses available",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/course/mycourses": {
+      "get": {
+        "tags": [
+          "Courses"
+        ],
+        "summary": "Get the trainer's courses",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token (Bearer *Token*)",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/course/update-myCourse/{_id}": {
+      "put": {
+        "tags": [
+          "Courses"
+        ],
+        "summary": "Update a course",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token (Bearer *Token*)",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "_id",
+            "in": "path",
+            "description": "Course id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "description": "Course new form",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Course"
+            }
+          }
+        ]
+      }
+    },
+    "/enroll/enrollincourse/{_id}": {
+      "post": {
+        "tags": [
+          "Courses"
+        ],
+        "summary": "enroll to a course",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token (Bearer *Token*)",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "_id",
+            "in": "path",
+            "description": "Course id",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/section/add-section/{id}": {
+      "post": {
+        "tags": [
+          "Sections","Courses"
+        ],
+        "summary": "create a section and assign it to a course",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token (Bearer *Token*)",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Course id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/section/getsection/{id}": {
+      "get": {
+        "tags": [
+          "Sections"
+        ],
+        "summary": "get a section from an id",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Course id",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/lesson/add-lesson/{id}": {
+      "post": {
+        "tags": [
+          "Lessons","Sections"
+        ],
+        "summary": "get a section from an id",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Section id",
+            "required": true,
+            "type": "string"
+          },{
+            "in": "body",
+            "name": "body",
+            "description": "New lesson",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/lesson/delete-lesson/{id}": {
+      "delete": {
+        "tags": [
+          "Lessons"
+        ],
+        "summary": "delete a lesson from an id",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Section id",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/review/add-review/{id}": {
+      "post": {
+        "tags": [
+          "Reviews","Courses"
+        ],
+        "summary": "create a review and assign it to a course",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Course id",
+            "required": true,
+            "type": "string"
+          },{
+            "in": "body",
+            "name": "body",
+            "description": "New Review",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ratingComp": { "type": "number", "required": true },
+                "ratingTrainer": { "type": "number", "required": true },
+                "ratingContent": { "type": "number", "required": true }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/course/addQuiz/{id}": {
+      "post": {
+        "tags": [
+          "Quizs","Courses"
+        ],
+        "summary": "create a quiz and assign it to a course",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Course id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Quiz",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Quiz"
+            }
+          }
+        ]
+      }
+    },
+    "/course/addQuestionToQuiz/{id}": {
+      "post": {
+        "tags": [
+          "Quizs"
+        ],
+        "summary": "add question to a quiz",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "quiz id",
+            "required": true,
+            "type": "string"
+          },{
+            "in": "body",
+            "name": "body",
+            "description": "New Review",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "question":{
+            "type":"string",
+            "required": true
+        },
+        "props":{
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+        },
+        "correctIndex":{
+            "type":"number",
+            "required": false
+        }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/comment/add-comment/{id}": {
+      "post": {
+        "tags": [
+          "Courses"
+        ],
+        "summary": "create a comment",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token (Bearer *Token*)",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Course id",
+            "required": true,
+            "type": "string"
+          },{
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "content": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
